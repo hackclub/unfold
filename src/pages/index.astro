@@ -1,37 +1,159 @@
 ---
 import GlobalLayout from "../layouts/global.astro";
+import Scribble from "../components/Scribble.astro";
 ---
 
 <GlobalLayout>
-	<main class="bg-black w-screen min-h-screen px-60 pt-40">
-		<h1 class="text-white font-serif text-7xl tracking-widest mb-8">
+	<!-- intro overlay: solid black + centered prompt -->
+	<div
+		id="intro"
+		class="fixed inset-0 z-40 flex items-center justify-center bg-black cursor-pointer select-none transition-opacity duration-700"
+	>
+		<span
+			class="text-white font-serif text-2xl tracking-[0.3em] transition-all hover:tracking-[0.4em] duration-700"
+		>
+			click to begin
+		</span>
+	</div>
+
+	<!-- bg video: starts invisible & paused, fades in on click -->
+	<video
+		id="bg-video"
+		class="fixed inset-0 w-full h-full object-cover object-center -z-30 pointer-events-none blur-[3px] opacity-0 transition-opacity duration-[3000ms]"
+		src="/unfold-bg.mp4"
+		preload="auto"
+		loop
+		muted
+		playsinline></video>
+
+	<!-- darken overlay -->
+	<div class="fixed inset-0 -z-20 bg-black/90 pointer-events-none"></div>
+
+	<!-- noise/grain overlay -->
+	<div
+		class="fixed inset-0 -z-10 pointer-events-none mix-blend-overlay bg-repeat bg-[length:250px_250px] animate-[grain_0.5s_steps(10)_infinite]"
+		style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E&quot;);"
+	>
+	</div>
+
+	<!-- scribble canvas (always active, even before click) -->
+	<Scribble />
+
+	<!-- background audio -->
+	<audio id="bg-audio" src="/Lifelike.mp3" preload="auto" loop></audio>
+
+	<!-- mute toggle -->
+	<button
+		id="mute-btn"
+		class="fixed bottom-6 right-6 z-50 text-white/30 hover:text-white/60 font-serif text-sm tracking-[0.2em] transition-colors duration-300 cursor-pointer opacity-0 pointer-events-none"
+	>
+		mute
+	</button>
+
+	<!-- page content: fades in after video -->
+	<main class="relative px-8 md:px-24 lg:px-40 pt-32 md:pt-40 max-w-300">
+		<h1
+			class="text-white font-serif text-4xl md:text-6xl lg:text-7xl tracking-[0.25em] opacity-0 transition-opacity duration-[1000ms] mb-7"
+		>
 			dear hack clubber,
 		</h1>
-		<p class="text-white font-serif text-4xl leading-12">
-			every good hacker has a magnum opus.
-			<br />
-			an idea that's been living in their head rent-free for ages, but that
-			they've convinced theselves that they can't do.
-			<br />
-			maybe because you don't know how, or you should study for your APs instead,
-			or you think you're not smart enough to pull it off.
-			<br />
-			sometimes, ideas go years, even decades, before they're acted upon. all
-			because we're just scared of starting. of failing.
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			it's may. there are two possible summers ahead of you.
 		</p>
-		<br />
-		<p class="text-white font-serif text-4xl leading-12">
-			this summer, we want you to make your idea a reality.
-			<br />
-			<br />
-			join a passionate community of hackers, makers, artists and dreamers just
-			like you. over seven weeks, you'll hack on your project alongside 100+
-			of your fellow Hack Clubbers. you'll learn new skills, make lifelong friends,
-			and walk away with a finished project that you're proud to share with
-			the world.
-			<br />
-			<br />
-			w
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			in one, you do the same thing you did last summer. you make some
+			projects. track a few hours on Hackatime. submit to some programs.
+			get, what, more AI credits and $20 in filament? you might get a few
+			stars on github. a few upvotes on reddit. ship some projects that
+			you think are neat... but then you'll never touch again. i know
+			that's what happens to me.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			september comes. back to school. i'll be sitting in my room with
+			some new stickers and a flipper zero, plus a vague sense that I was
+			kinda busy during the summer but that none of it really mattered.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			in the other version, you build the idea. yes, that one. the one
+			that's been sitting in your notes app, your Notion, a folder of
+			markdown files called "app ideas" that you haven't touched in
+			months. the one that you're obsessed with, but that you've never
+			quite managed to start. you tell yourself that you're not good
+			enough, that it's a waste of time to try, that you really should be
+			preparing for APs or something instead.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			trust me.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			you can do this.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			over seven weeks, alongside 100+ other hackers, you'll take your
+			idea from one-liner to a shipped project with real users.
 		</p>
 	</main>
 </GlobalLayout>
+
+<script>
+	const intro = document.getElementById("intro")!;
+	const video = document.getElementById("bg-video") as HTMLVideoElement;
+	const audio = document.getElementById("bg-audio") as HTMLAudioElement;
+	const main = document.querySelector("main")!;
+	const muteBtn = document.getElementById("mute-btn")!;
+
+	// make sure first frame is loaded before we ever try to show it
+	video.load();
+
+	const CONTENT_DELAY = 2000; // ms after click before first element fades in
+	const STAGGER = 700; // ms between each element
+
+	intro.addEventListener("click", () => {
+		// 1. fade out the intro overlay
+		intro.classList.add("opacity-0", "pointer-events-none");
+
+		// 2. start music softly
+		audio.volume = 0.3;
+		audio.play();
+
+		// 3. start video immediately + fade it in
+		video.play();
+		video.classList.remove("opacity-0");
+		video.classList.add("opacity-100");
+
+		// show mute button
+		muteBtn.classList.remove("opacity-0", "pointer-events-none");
+
+		// 4. fade in each direct child of <main> sequentially
+		const elements = main.children;
+		for (let i = 0; i < elements.length; i++) {
+			setTimeout(
+				() => {
+					elements[i].classList.remove("opacity-0");
+					elements[i].classList.add("opacity-100");
+				},
+				CONTENT_DELAY + i * STAGGER,
+			);
+		}
+	});
+
+	// mute toggle
+	muteBtn.addEventListener("click", () => {
+		audio.muted = !audio.muted;
+		muteBtn.textContent = audio.muted ? "unmute" : "mute";
+	});
+</script>

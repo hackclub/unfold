@@ -1,0 +1,138 @@
+<canvas
+	id="scribble-canvas"
+	class="fixed inset-0 w-full h-full pointer-events-none z-50"></canvas>
+
+<script>
+	const canvas = document.getElementById(
+		"scribble-canvas",
+	) as HTMLCanvasElement;
+	const ctx = canvas.getContext("2d")!;
+
+	// --- retina support ---
+	function resize() {
+		const dpr = window.devicePixelRatio || 1;
+		canvas.width = window.innerWidth * dpr;
+		canvas.height = window.innerHeight * dpr;
+		ctx.scale(dpr, dpr);
+	}
+	resize();
+	window.addEventListener("resize", resize);
+
+	// --- types & state ---
+	interface Point {
+		x: number;
+		y: number;
+	}
+
+	interface Segment {
+		from: Point;
+		to: Point;
+	}
+
+	const segments: Segment[] = [];
+	let anchor: Point | null = null;
+	let cursor: Point | null = null;
+	let targetDist = rollDistance();
+
+	// soft cap on trail length — re-rolled each time we hit it
+	let maxSegments = rollMax();
+	let lastAddedAt = 0;
+
+	// --- helpers ---
+	function rollDistance(): number {
+		return Math.random() * 150;
+	}
+
+	function rollMax(): number {
+		return 48 + Math.floor(Math.random() * 32); // 24–39 segments
+	}
+
+	function dist(a: Point, b: Point): number {
+		return Math.hypot(b.x - a.x, b.y - a.y);
+	}
+
+	// --- mouse tracking ---
+	document.addEventListener("mousemove", (e) => {
+		cursor = { x: e.clientX, y: e.clientY };
+
+		if (!anchor) {
+			anchor = { ...cursor };
+			return;
+		}
+
+		if (dist(anchor, cursor) >= targetDist) {
+			segments.push({
+				from: { ...anchor },
+				to: { ...cursor },
+			});
+			lastAddedAt = performance.now();
+
+			// trim from the tail if we're over the cap
+			while (segments.length > maxSegments) {
+				segments.shift();
+			}
+			// re-roll cap occasionally so trail length breathes
+			if (Math.random() < 0.3) maxSegments = rollMax();
+
+			anchor = { ...cursor };
+			targetDist = rollDistance();
+		}
+	});
+
+	// --- idle decay: eat from the tail when mouse stops ---
+	let lastDecayAt = 0;
+	const IDLE_THRESHOLD = 800; // ms before we start eating
+	const DECAY_INTERVAL = 150; // ms between eating segments
+
+	// --- draw loop ---
+	function draw() {
+		const now = performance.now();
+
+		// idle decay: if no new segments for a while, start trimming
+		const idle = now - lastAddedAt;
+		if (
+			segments.length > 0 &&
+			idle > IDLE_THRESHOLD &&
+			now - lastDecayAt > DECAY_INTERVAL
+		) {
+			segments.shift();
+			lastDecayAt = now;
+		}
+
+		// clear
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		// draw trail — opacity based on position: oldest=dim, newest=bright
+		const len = segments.length;
+		for (let i = 0; i < len; i++) {
+			const seg = segments[i];
+			// position ratio: 0 = oldest, 1 = newest
+			const t = len === 1 ? 1 : i / (len - 1);
+			// ease in so the tail fades more aggressively
+			const opacity = t * t;
+
+			ctx.beginPath();
+			ctx.moveTo(seg.from.x, seg.from.y);
+			ctx.lineTo(seg.to.x, seg.to.y);
+			ctx.strokeStyle = `rgba(200, 200, 195, ${opacity * 0.5})`;
+			ctx.lineWidth = 1.5;
+			ctx.lineCap = "round";
+			ctx.stroke();
+		}
+
+		// live line: always follows cursor from anchor
+		if (anchor && cursor) {
+			ctx.beginPath();
+			ctx.moveTo(anchor.x, anchor.y);
+			ctx.lineTo(cursor.x, cursor.y);
+			ctx.strokeStyle = "rgba(200, 200, 195, 0.3)";
+			ctx.lineWidth = 1.5;
+			ctx.lineCap = "round";
+			ctx.stroke();
+		}
+
+		requestAnimationFrame(draw);
+	}
+
+	requestAnimationFrame(draw);
+</script>
