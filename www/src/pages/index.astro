@@ -106,6 +106,50 @@ import Scribble from "../components/Scribble.astro";
 			over seven weeks, alongside 100+ other hackers, you'll take your
 			idea from one-liner to a shipped project with real users.
 		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			in week 1, you'll design your idea. write it down, as one or two
+			sentences. share it with the world. that's it for now - your first
+			ship is your idea.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			week 2, you'll build a prototype. the most ugly, crappy, janky,
+			horrible version of your idea. and you'll ship it to the world too.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			by week 4, you'll be heads down, building and iterating on feedback
+			from your fellow hackers.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			and by week 7, you'll have a polished, beautiful final product with
+			users behind it, and you'll have sent it out into the world, for
+			everyone to see.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			every week, you'll have workshops and AMAs with founders, artists,
+			and builders that were once at the same place you are now - staring
+			an idea that feels impossible, and building it anyway. hang out with
+			other HCers doing the same exhilarating, terrifying thing as you,
+			make lifelong friends, and grow as a person and as a hacker.
+		</p>
+		<p
+			class="text-white font-serif text-2xl md:text-3xl opacity-0 transition-opacity duration-[1000ms] mb-5"
+		>
+			along the way, we'll support you with microgrants, community events,
+			resources, and everything else you need to ship something amazing.
+			plus, for each milestone you reach - weeks 1, 4, and 7 - we'll mail
+			you exclusive unfold merch, hand designed with &lt;3 by teen
+			artists.
+		</p>
 	</main>
 </GlobalLayout>
 
@@ -115,6 +159,10 @@ import Scribble from "../components/Scribble.astro";
 	const audio = document.getElementById("bg-audio") as HTMLAudioElement;
 	const main = document.querySelector("main")!;
 	const muteBtn = document.getElementById("mute-btn")!;
+
+	// reset scroll position on load — browser likes to "helpfully" restore it
+	history.scrollRestoration = "manual";
+	window.scrollTo(0, 0);
 
 	// make sure first frame is loaded before we ever try to show it
 	video.load();
