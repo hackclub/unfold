@@ -37,24 +37,22 @@ const error = url.searchParams.get("error");
 		class="fixed inset-0 flex flex-col items-center justify-center px-8 text-center"
 	>
 		<p
-			class="text-white/70 font-serif text-base md:text-lg tracking-[0.3em] mb-10 uppercase"
+			class="text-white/60 font-serif italic text-base md:text-lg tracking-[0.3em] mb-4"
 		>
-			the application
+			it's a feeling i want you to know
 		</p>
-
+		<p
+			class="text-white font-serif text-base md:text-3xl tracking-[0.2em] mb-10 w-160 max-w-prose"
+		>
+			once you rsvp, we'll add you to the slack channels and save your email for when we launch.
+		</p>
 		<a
 			href="/api/auth/login"
 			class="text-white font-serif text-2xl md:text-3xl underline decoration-1 underline-offset-8 hover:tracking-widest"
-			style="transition: letter-spacing 300ms;"
+			style="transition: letter-spacing 500ms;"
 		>
-			log in with hack club
+			log in with hack club ꕥ
 		</a>
-
-		<p
-			class="text-white/40 font-serif text-sm md:text-base tracking-[0.2em] mt-16 max-w-md"
-		>
-			that's it. that's the whole thing.
-		</p>
 
 		{
 			error && (
@@ -64,11 +62,5 @@ const error = url.searchParams.get("error");
 			)
 		}
 
-		<a
-			href="/"
-			class="text-white/30 hover:text-white/60 font-serif text-xs tracking-[0.3em] uppercase mt-24 transition-colors duration-300"
-		>
-			← back
-		</a>
 	</main>
 </GlobalLayout>
