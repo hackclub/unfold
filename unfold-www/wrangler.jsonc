@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "unfold-www",
+	"compatibility_date": "2026-07-02",
+	"compatibility_flags": [
+		"nodejs_als"
+	],
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"workers_dev": true,
+	"preview_urls": true,
+	"vars": {
+		"UNFOLD_OIDC_CLIENT_ID": "319ce81aa1b7c4c2eca853113c1b9348",
+		"UNFOLD_OIDC_REDIRECT_URI": "https://unfold.garden/api/auth/callback",
+		"RESEND_SEGMENT_ID": "40c3880d-e962-477b-853a-662ae2390ae8",
+		"UNFOLD_SLACK_CHANNEL_IDS": "C0B013JNXPZ,C0B3WGZMGES,C0B0A5X5B27"
+	}
+}

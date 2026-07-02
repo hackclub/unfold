@@ -1,0 +1,17 @@
+# --- hack club oidc ---
+# register an app at https://auth.hackclub.com (ask in #idv-dev) with redirect:
+#   https://your-deployment.example/api/auth/callback
+# (and http://localhost:5173/api/auth/callback for local dev)
+UNFOLD_OIDC_CLIENT_ID=
+UNFOLD_OIDC_CLIENT_SECRET=
+UNFOLD_OIDC_REDIRECT_URI=http://localhost:5173/api/auth/callback
+
+# --- resend (segment storage; will migrate to a real db later) ---
+RESEND_API_KEY=
+RESEND_SEGMENT_ID=
+
+# --- slack (bot must already be a member of each channel) ---
+# scopes needed: channels:manage (public) and/or groups:write (private)
+SLACK_BOT_TOKEN=xoxb-
+# comma-separated list of channel ids
+UNFOLD_SLACK_CHANNEL_IDS=C0XXXXXXXX,C0YYYYYYYY
