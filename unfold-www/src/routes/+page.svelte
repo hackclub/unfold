@@ -48,7 +48,10 @@
 		if (!audio) return;
 		audio.muted = true;
 		audio.volume = 0.3;
-		audio.play();
+		audio.play().catch(() => {
+			// autoplay blocked (common without a prior user gesture) — silently
+			// leave it paused; the mute toggle is the explicit opt-in.
+		});
 	});
 
 	function toggleMute() {

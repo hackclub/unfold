@@ -94,7 +94,7 @@
 				lastDecayAt = now;
 			}
 
-			ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+			ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
 			const len = segments.length;
 			for (let i = 0; i < len; i++) {

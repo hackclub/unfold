@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect, isRedirect } from '@sveltejs/kit';
 import { getEnv } from '$lib/server/env';
 import { createOrUpdateParticipant } from '$lib/server/airtable';
 import { sendWelcomeEmail } from '$lib/server/resend';
@@ -72,6 +72,7 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 		}
 		token = (await r.json()) as TokenResponse;
 	} catch (err) {
+ 		if (isRedirect(err)) throw err;
 		console.error('token exchange threw', err);
 		redirect(302, '/apply?error=token_network');
 	}
@@ -89,6 +90,7 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 		}
 		user = (await r.json()) as UserInfo;
 	} catch (err) {
+ 		if (isRedirect(err)) throw err;
 		console.error('userinfo threw', err);
 		redirect(302, '/apply?error=userinfo_network');
 	}
@@ -97,9 +99,11 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 		redirect(302, '/apply?error=no_email');
 	}
 
-	// 3. upsert participant in airtable + send welcome email (both best-effort)
-	try {
-		await createOrUpdateParticipant({
+	// 3. best-effort side effects — independent, so fire them in parallel and
+	//    don't let any one failure block the others (or the redirect).
+	const channelIds = env.UNFOLD_SLACK_CHANNEL_IDS.split(',').map((s) => s.trim()).filter(Boolean);
+	const sideEffects = [
+		createOrUpdateParticipant({
 			token: env.AIRTABLE_TOKEN,
 			baseId: env.AIRTABLE_BASE_ID,
 			fullName: user.name ?? [user.given_name, user.family_name].filter(Boolean).join(' '),
@@ -107,32 +111,14 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 			slackId: user.slack_id ?? '',
 			hcaSub: user.sub,
 			stage: 'Signup'
-		});
-	} catch (err) {
-		console.error('airtable upsert failed', err);
-	}
-	try {
-		await sendWelcomeEmail({
-			apiKey: env.RESEND_API_KEY,
-			email: user.email
-		});
-	} catch (err) {
-		console.error('resend welcome email failed', err);
-	}
-
-	// 4. invite to slack channels (best-effort)
-	if (user.slack_id) {
-		try {
-			await inviteUserToChannels({
-				botToken: env.SLACK_BOT_TOKEN,
-				userId: user.slack_id,
-				channelIds: env.UNFOLD_SLACK_CHANNEL_IDS.split(',')
-					.map((s) => s.trim())
-					.filter(Boolean)
-			});
-		} catch (err) {
-			console.error('slack invite failed', err);
-		}
+		}),
+		sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email: user.email }),
+		user.slack_id
+			? inviteUserToChannels({ botToken: env.SLACK_BOT_TOKEN, userId: user.slack_id, channelIds })
+			: Promise.resolve()
+	];
+	for (const result of await Promise.allSettled(sideEffects)) {
+		if (result.status === 'rejected') console.error('best-effort side effect failed', result.reason);
 	}
 
 	redirect(302, '/applied');
