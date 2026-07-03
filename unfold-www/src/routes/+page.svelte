@@ -266,6 +266,9 @@
 			</p>
 			<p>
 				~ hex4, unfold org (<a
+					href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R"
+					target="_blank"
+					rel="noopener noreferrer"
 					class="hover:text-white underline decoration-1 cursor-pointer underline-offset-4 transition-all duration-400"
 					>dm on slack!</a
 				>)
