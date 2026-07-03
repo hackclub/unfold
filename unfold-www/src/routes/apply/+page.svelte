@@ -20,26 +20,37 @@
 	style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E&quot;);"
 ></div>
 
-<main class="fixed inset-0 flex flex-col items-center justify-center px-8 text-center">
-	<p class="text-white/60 font-serif italic text-base md:text-lg tracking-[0.3em] mb-4">
-		it's a feeling i want you to know
+<main class="fixed inset-0 flex flex-col items-center justify-center px-8 text-center text-white font-serif">
+	<h1 class="text-4xl md:text-6xl tracking-[0.25em] mb-8">sign up</h1>
+
+	<p class="text-lg md:text-2xl text-white/80 max-w-xl mb-12 leading-relaxed">
+		log in with your hack club account and we'll add you to the slack channels.
 	</p>
-	<p
-		class="text-white font-serif text-base md:text-3xl tracking-[0.2em] mb-10 w-160 max-w-prose"
-	>
-		once you rsvp, we'll add you to the slack channels and save your email for when we launch.
-	</p>
+
 	<a
 		href="/api/auth/login"
-		class="text-white font-serif text-2xl md:text-3xl underline decoration-1 underline-offset-8 hover:tracking-widest"
-		style="transition: letter-spacing 500ms;"
+		class="text-2xl md:text-3xl underline decoration-1 underline-offset-8 hover:tracking-widest transition-[letter-spacing] duration-500"
 	>
-		log in with hack club ꕥ
+		sign up with hack club →
+	</a>
+
+	<a
+		href="https://auth.hackclub.com/welcome"
+		class="text-white/50 hover:text-white text-sm tracking-[0.2em] mt-8 transition-colors duration-300"
+	>
+		new to hack club? create an account first →
 	</a>
 
 	{#if error}
-		<p class="text-red-300/80 font-serif text-sm tracking-[0.15em] mt-8">
+		<p class="text-red-300/80 text-sm tracking-[0.15em] mt-10">
 			something broke ({error}). try again?
 		</p>
 	{/if}
+
+	<a
+		href="/"
+		class="text-white/30 hover:text-white/60 text-sm tracking-[0.2em] mt-24 transition-colors duration-300"
+	>
+		← back home
+	</a>
 </main>

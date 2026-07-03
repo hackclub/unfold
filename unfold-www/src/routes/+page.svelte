@@ -1,103 +1,26 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
-	// intro state — true = show "click to begin" overlay
-	let started = $state(false);
-	// skip-stagger flag — clicking anywhere fast-forwards the fade-in
-	let revealed = $state(false);
-	// mute toggle
-	let muted = $state(false);
-
-	const CONTENT_DELAY = 2000;
-	const STAGGER = 700;
-
-	let video: HTMLVideoElement;
 	let audio: HTMLAudioElement;
-	let mainEl: HTMLElement;
-	let muteBtn: HTMLButtonElement;
+	let muted = $state(true);
 
-	// sequence: which child of <main> is currently shown
-	let step = $state(-1); // -1 = nothing yet
-	let totalSteps = 0;
-
-	// mount: reset scroll, preload video, count main children
 	onMount(() => {
-		history.scrollRestoration = 'manual';
-		window.scrollTo(0, 0);
-		video.load();
-		totalSteps = mainEl.children.length;
-	});
-
-	// stagger scheduler: when started, reveals main children one by one.
-	// if `revealed` flips true mid-sequence, snap everything to visible.
-	$effect(() => {
-		if (!started) return;
-
-		const timeouts: ReturnType<typeof setTimeout>[] = [];
-		for (let i = 0; i < totalSteps; i++) {
-			const idx = i;
-			timeouts.push(
-				setTimeout(() => {
-					if (revealed) return; // already force-revealed
-					step = idx;
-				}, CONTENT_DELAY + idx * STAGGER)
-			);
-		}
-
-		return () => {
-			for (const id of timeouts) clearTimeout(id);
-		};
-	});
-
-	// skip animation: any click past the intro jumps to fully revealed
-	function onWindowClick() {
-		if (started && !revealed) revealed = true;
-	}
-
-	function start() {
-		if (started) return;
-		started = true;
-		// start music softly + kick the video
+		if (!audio) return;
+		audio.muted = true;
 		audio.volume = 0.3;
 		audio.play();
-		video.play();
-		// register skip-listener next tick so the intro click doesn't double-fire
-		setTimeout(() => window.addEventListener('click', onWindowClick), 0);
-	}
+	});
 
 	function toggleMute() {
 		muted = !muted;
 		audio.muted = muted;
 	}
-
-	// helper: is the i-th child currently visible?
-	function isShown(i: number) {
-		return revealed || step >= i;
-	}
 </script>
 
-{#if !started}
-	<div
-		class="fixed inset-0 z-40 flex items-center justify-center bg-black cursor-pointer select-none transition-opacity duration-700"
-		onclick={start}
-		onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && start()}
-		role="button"
-		tabindex="0"
-	>
-		<span
-			class="text-white font-serif text-2xl tracking-[0.3em] transition-all hover:tracking-[0.4em] duration-700"
-		>
-			click to begin
-		</span>
-	</div>
-{/if}
-
 <video
-	bind:this={video}
-	class="fixed inset-0 w-full h-full object-cover object-center -z-30 pointer-events-none blur-[3px] transition-opacity duration-[3000ms]"
-	class:opacity-0={!started}
-	class:opacity-100={started}
+	class="fixed inset-0 w-full h-full object-cover object-center -z-30 pointer-events-none blur-[3px]"
 	src="/unfold-bg.mp4"
+	autoplay
 	preload="auto"
 	loop
 	muted
@@ -114,179 +37,201 @@
 <audio bind:this={audio} src="/Lifelike.mp3" preload="auto" loop></audio>
 
 <button
-	bind:this={muteBtn}
 	onclick={toggleMute}
-	class="fixed bottom-6 right-6 z-50 text-white/30 hover:text-white/60 font-serif text-sm tracking-[0.2em] transition-colors duration-300 cursor-pointer"
-	class:opacity-0={!started}
-	class:pointer-events-none={!started}
+	class="fixed top-6 right-6 z-50 text-white/40 hover:text-white font-serif text-sm tracking-[0.2em] transition-colors duration-300 cursor-pointer"
 >
-	{muted ? 'unmute' : 'mute'}
+	{muted ? "unmute audio" : "mute audio"}
 </button>
 
-<main bind:this={mainEl} class="relative px-8 md:px-24 lg:px-40 pt-32 md:pt-40 max-w-300">
-	<h1
-		class="text-white font-serif text-4xl md:text-6xl lg:text-7xl tracking-[0.25em] mb-7 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(0)}
-		class:opacity-100={isShown(0)}
-	>
-		dear hack clubber,
-	</h1>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(1)}
-		class:opacity-100={isShown(1)}
-	>
-		there are two possible summers ahead of you.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(2)}
-		class:opacity-100={isShown(2)}
-	>
-		in one, you do the same thing you did last summer. you make some projects. track a few hours
-		on Hackatime. submit to some programs. get, what, more AI credits and $20 in filament? you
-		might get a few stars on github. a few upvotes on reddit. ship some projects that you think
-		are neat... but then you'll never touch again. i know that's what happens to me.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(3)}
-		class:opacity-100={isShown(3)}
-	>
-		september comes. back to school. i'll be sitting in my room with some new stickers and a
-		flipper zero, plus a vague sense that i was kinda busy during the summer but that none of
-		it really mattered.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(4)}
-		class:opacity-100={isShown(4)}
-	>
-		in the other version, you build the idea. yes, that one. the one that's been sitting in
-		your notes app, your Notion, a folder of markdown files called "app ideas" that you
-		haven't touched in months. the one that you're obsessed with, but that you've never quite
-		managed to start. you tell yourself that you're not good enough, that it's a waste of time
-		to try, that you really should be preparing for APs or something instead.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(5)}
-		class:opacity-100={isShown(5)}
-	>
-		trust me.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(6)}
-		class:opacity-100={isShown(6)}
-	>
-		you can do this.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(7)}
-		class:opacity-100={isShown(7)}
-	>
-		over six weeks, alongside 100+ other hackers, you'll take your idea from a one-liner to a
-		shipped project with real users.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(8)}
-		class:opacity-100={isShown(8)}
-	>
-		in week 1, you'll design your idea. write it down, as one or two sentences. share it with
-		the world. that's it for now - your first ship is your idea.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(9)}
-		class:opacity-100={isShown(9)}
-	>
-		week 2, you'll build a prototype. a tiny, quick, maybe janky, toy version of your idea,
-		something that you can show to someone and get them excited about what you're building.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(10)}
-		class:opacity-100={isShown(10)}
-	>
-		by week 4, you'll be heads down, building and iterating on feedback from your fellow hackers.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(11)}
-		class:opacity-100={isShown(11)}
-	>
-		and by week 6, you'll have a polished, beautiful final product with users behind it, and
-		you'll have sent it out into the world, for everyone to see.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(12)}
-		class:opacity-100={isShown(12)}
-	>
-		every week, you'll have workshops and AMAs with founders, artists, and builders who were
-		once at the same place you are now - staring at an idea that feels impossible, and
-		building it anyway. hang out with other HCers doing the same exhilarating, terrifying
-		thing as you, make lifelong friends, and grow as a person and as a hacker.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(13)}
-		class:opacity-100={isShown(13)}
-	>
-		every week, once you ship, we'll give you something that helps you keep hacking. things
-		like sticker sheets, domain grants, hosting credits, and discretionary funding that you
-		can use for your project however you see fit. plus, if you see your project through to
-		the end, we'll send you the completion package! it's a box stuffed with an exclusive
-		unfold hoodie, stickers, postcards, and other swag designed by teen artists.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-5 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(14)}
-		class:opacity-100={isShown(14)}
-	>
-		this isn't a bootcamp. we're not gonna teach you how to call an API or open FL Studio.
-		we're also not gonna strictly track your hours or tell you what to build. instead, we'll
-		give you the structure, the community, the resources, and the deadline for you to ship
-		something real.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-12 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(15)}
-		class:opacity-100={isShown(15)}
-	>
-		both of these summers will end. only one will matter.
-	</p>
-	<p
-		class="text-white font-serif text-2xl md:text-3xl mb-12 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(16)}
-		class:opacity-100={isShown(16)}
-	>
-		ꕥ unfold is the program to make your idea real. week 1 starts on july 6th, and week 6
-		ends august 23rd. i hope to see you there :)
-	</p>
-	<a
-		class="text-white font-serif text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-wider mb-32 block transition-[opacity,letter-spacing] duration-[1000ms]"
-		style="transition: opacity 1000ms, letter-spacing 500ms;"
-		class:opacity-0={!isShown(17)}
-		class:opacity-100={isShown(17)}
-		href="/apply"
-	>
-		RSVP now →
-	</a>
-	<p
-		class="text-gray-400 font-serif text-2xl md:text-3xl my-5 pb-50 transition-opacity duration-[1000ms]"
-		class:opacity-0={!isShown(18)}
-		class:opacity-100={isShown(18)}
-	>
-		and, if all this resonates with you, we're looking for team members to help build unfold
-		alongside us. artists, hackers, writers, makers, and anyone else that'd like to help out -
-		drop a message in <a
-			href="https://hackclub.enterprise.slack.com/archives/C0B0L5E3CN8"
-			class="underline decoration-1 underline-offset-4 hover:tracking-widest duration-500"
-			>#unfold-bts</a
-		>. we'd love to see what you're interested in building.
-	</p>
+<main
+	class="relative text-white font-serif px-6 md:px-16 lg:px-32 max-w-7xl mx-auto"
+>
+	<section class="min-h-screen flex flex-col justify-center py-24">
+		<h1 class="text-7xl md:text-9xl lg:text-[10rem] tracking-[0.3em]">
+			unfold
+		</h1>
+		<p class="text-2xl md:text-4xl lg:text-5xl mt-5 max-w-4xl leading-snug">
+			go from one-liner to something real in 6 weeks.
+		</p>
+		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
+			week 1 starts july 6. fully online. a <a
+				href="https://hackclub.com"
+				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
+				target="_blank"
+				rel="noopener noreferrer">hack club</a
+			> program.
+		</p>
+		<div class="mt-14 flex flex-col gap-5">
+			<a
+				href="/apply"
+				class="text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500 w-fit"
+			>
+				sign up →
+			</a>
+			<a
+				href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ"
+				class="text-lg md:text-xl text-white/60 underline decoration-1 underline-offset-4 hover:text-white transition-colors w-fit"
+			>
+				join #unfold on the hack club slack
+			</a>
+		</div>
+	</section>
+
+	<section class="py-24 md:py-32">
+		<p class="text-lg md:text-xl text-white mb-12 max-w-2xl">
+		every week has a single focus. show up, ship something, and move your idea
+		forward.
+		</p>
+		<div
+			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+		>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">one</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">the spark</h3>
+				<p class="text-white/80">
+					define your idea, share it, plant the flag.
+				</p>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">two</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">the rush</h3>
+				<p class="text-white/80">
+					build the tiny version. ship your prototype.
+				</p>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">three</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">the feedback loop</h3>
+				<p class="text-white/80">
+					show people. get real reactions. iterate.
+				</p>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">four</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">it works</h3>
+				<p class="text-white/80">
+					lock in. build until the core actually functions.
+				</p>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">five</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">put yourself out there</h3>
+				<p class="text-white/80">
+					find real users. share outside hack club.
+				</p>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<p
+					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+				>
+					<em class="italic">six</em>
+				</p>
+				<h3 class="text-xl md:text-2xl mb-2">unfold</h3>
+				<p class="text-white/80">
+					final ship. polish. launch. tell your story.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="py-24 md:py-32">
+		<p class="text-2xl md:text-3xl text-white mb-12 max-w-3xl">
+		along the way, we'll support you with:
+		</p>
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+			<article class="border border-white/10 p-6 md:p-8">
+				<h3 class="text-xl md:text-2xl mb-4">for your project</h3>
+				<ul class="space-y-2 text-white/80">
+					<li>$10 domain credit in week 2</li>
+					<li>$15–20 hosting/infra credits in week 4</li>
+					<li>discretionary “i need this to ship” grants</li>
+					<li>keep-it-alive credits so it doesn't die after</li>
+				</ul>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<h3 class="text-xl md:text-2xl mb-4">the community</h3>
+				<ul class="space-y-2 text-white/80">
+					<li>circles of 8–10 builders, assigned after week 1</li>
+					<li>weekly lock-in huddles with ambient music</li>
+					<li>workshops and AMAs with people who've shipped</li>
+					<li>optional friday show & tell</li>
+				</ul>
+			</article>
+			<article class="border border-white/10 p-6 md:p-8">
+				<h3 class="text-xl md:text-2xl mb-4">cool merch</h3>
+				<ul class="space-y-2 text-white/80">
+					<li>
+						welcome envelope in week 2 — sticker sheet, postcard,
+						bookmark
+					</li>
+					<li>
+						the completer package — exclusive hoodie and postcards
+					</li>
+				</ul>
+			</article>
+		</div>
+	</section>
+
+	<section class="py-24 md:py-32 max-w-3xl">
+		<!-- the vibe -->
+		<div class="space-y-6 text-lg md:text-xl text-white/80 leading-relaxed">
+			<p>
+				unfold is for the idea that's been sitting in your notes app.
+				the one you keep saying you'll start. over six weeks, alongside
+				other builders, you'll take it from a sentence to something
+				people actually use.
+			</p>
+			<p>
+				this is a program for people who want to make something real.
+				we'll give you a weekly shipping cadence, a community that
+				actually knows what you're building, and grants that go straight
+				to your project.
+			</p>
+			<p>
+				we're not here to teach you syntax or track your hours. we'll
+				give you the structure, the people, and the deadline to ship
+				something you care about.
+			</p>
+		</div>
+	</section>
+
+	<section class="py-24 md:py-32 text-center">
+		<p class="text-2xl md:text-4xl mb-10">week 1 starts july 6.</p>
+		<a
+			href="/apply"
+			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"
+		>
+			sign up →
+		</a>
+	</section>
+
+	<footer class="py-32 md:py-64 text-center text-white/40">
+		<p class="text-4xl md:text-6xl mb-8">ꕥ</p>
+		<a
+			href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ"
+			class="text-sm tracking-[0.2em] underline decoration-1 underline-offset-4 hover:text-white transition-colors"
+		>
+			#unfold on hack club slack
+		</a>
+	</footer>
 </main>
