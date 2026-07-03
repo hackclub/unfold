@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { getEnv } from '$lib/server/env';
-import { addContactToSegment } from '$lib/server/resend';
+import { createOrUpdateParticipant } from '$lib/server/airtable';
+import { sendWelcomeEmail } from '$lib/server/resend';
 import { inviteUserToChannels } from '$lib/server/slack';
 import type { RequestHandler } from './$types';
 
@@ -96,21 +97,27 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 		redirect(302, '/apply?error=no_email');
 	}
 
-	// 3. add to resend segment (best-effort: log on failure but still proceed)
+	// 3. upsert participant in airtable + send welcome email (both best-effort)
 	try {
-		await addContactToSegment({
-			apiKey: env.RESEND_API_KEY,
-			segmentId: env.RESEND_SEGMENT_ID,
+		await createOrUpdateParticipant({
+			token: env.AIRTABLE_TOKEN,
+			baseId: env.AIRTABLE_BASE_ID,
+			fullName: user.name ?? [user.given_name, user.family_name].filter(Boolean).join(' '),
 			email: user.email,
-			firstName: user.given_name,
-			lastName: user.family_name,
-			properties: {
-				slack_id: user.slack_id ?? '',
-				hackclub_sub: user.sub
-			}
+			slackId: user.slack_id ?? '',
+			hcaSub: user.sub,
+			stage: 'Signup'
 		});
 	} catch (err) {
-		console.error('resend add failed', err);
+		console.error('airtable upsert failed', err);
+	}
+	try {
+		await sendWelcomeEmail({
+			apiKey: env.RESEND_API_KEY,
+			email: user.email
+		});
+	} catch (err) {
+		console.error('resend welcome email failed', err);
 	}
 
 	// 4. invite to slack channels (best-effort)

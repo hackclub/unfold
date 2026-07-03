@@ -10,6 +10,19 @@
 
 @theme {
 	--font-serif: 'Myungjo', serif;
+
+	/* the nurture palette — the album arc, gold to sunrise */
+	--color-dawn: #ecd9a8; /* wk1 — the spark */
+	--color-leaf: #aed8a0; /* wk2 — the rush */
+	--color-sea: #8fcfc2; /* wk3 — the feedback loop */
+	--color-dusk: #8b7fd6; /* wk4 — the dark middle */
+	--color-bloom: #c79bd8; /* wk5 — put yourself out there */
+	--color-ember: #f2b88f; /* wk6 — sunrise */
+}
+
+/* week cards — accent color flows in from a CSS var per card */
+.week-card {
+	border-color: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 @keyframes grain {

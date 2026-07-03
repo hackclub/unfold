@@ -4,6 +4,46 @@
 	let audio: HTMLAudioElement;
 	let muted = $state(true);
 
+	// the album arc: gold → green → sea → the dark middle → bloom → sunrise
+	const weeks = [
+		{
+			n: "one",
+			title: "first light",
+			body: "decide what you're gonna build & sketch out your idea",
+			accent: "var(--color-dawn)",
+		},
+		{
+			n: "two",
+			title: "the prototype",
+			body: "build the tiniest possible version, then ship it",
+			accent: "var(--color-leaf)",
+		},
+		{
+			n: "three",
+			title: "show n tell",
+			body: "share your prototype, get thoughts, build on them.",
+			accent: "var(--color-sea)",
+		},
+		{
+			n: "four",
+			title: "midnight",
+			body: "lock in to build the bulk of your project.",
+			accent: "var(--color-dusk)",
+		},
+		{
+			n: "five",
+			title: "find your ppl",
+			body: "find real users, iterate on feedback, and polish your work.",
+			accent: "var(--color-bloom)",
+		},
+		{
+			n: "six",
+			title: "unfold",
+			body: "your final ship. share with the world",
+			accent: "var(--color-ember)",
+		},
+	];
+
 	onMount(() => {
 		if (!audio) return;
 		audio.muted = true;
@@ -27,7 +67,23 @@
 	playsinline
 ></video>
 
-<div class="fixed inset-0 -z-20 bg-black/90 pointer-events-none"></div>
+<!-- twilight tint: purple-navy up top, mossy green mid, warm ember low -->
+<div
+	class="fixed inset-0 -z-20 pointer-events-none opacity-80"
+	style="background: linear-gradient(
+		175deg,
+		#0d0a1e 0%,
+		#131028 30%,
+		#101a17 62%,
+		#1c1210 100%
+	);"
+></div>
+
+<!-- vignette so edges fall away and text stays readable -->
+<div
+	class="fixed inset-0 -z-20 pointer-events-none"
+	style="background: radial-gradient(ellipse 120% 90% at 50% 40%, transparent 40%, rgba(5, 4, 12, 0.55) 100%);"
+></div>
 
 <div
 	class="fixed inset-0 -z-10 pointer-events-none mix-blend-overlay bg-repeat bg-[length:250px_250px] animate-[grain_0.5s_steps(10)_infinite]"
@@ -47,11 +103,17 @@
 	class="relative text-white font-serif px-6 md:px-16 lg:px-32 max-w-7xl mx-auto"
 >
 	<section class="min-h-screen flex flex-col justify-center py-24">
+		<p
+			class="italic mb-5 text-sm md:text-base tracking-[0.35em] text-(--color-dawn)/90"
+		>
+			ꕥ&ensp;and i watched the water unfold
+		</p>
 		<h1 class="text-7xl md:text-9xl lg:text-[10rem] tracking-[0.3em]">
 			unfold
 		</h1>
 		<p class="text-2xl md:text-4xl lg:text-5xl mt-5 max-w-4xl leading-snug">
-			go from one-liner to something real in 6 weeks.
+			go from one-liner to something
+			<em class="italic">real</em> in 6 weeks.
 		</p>
 		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
 			week 1 starts july 6. fully online. a <a
@@ -79,114 +141,96 @@
 
 	<section class="py-24 md:py-32">
 		<p class="text-lg md:text-xl text-white mb-12 max-w-2xl">
-		every week has a single focus. show up, ship something, and move your idea
-		forward.
+			every week, you'll ship some version of your big idea.
 		</p>
 		<div
 			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
 		>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
+			{#each weeks as week}
+				<article
+					class="week-card border bg-black/25 backdrop-blur-sm p-6 md:p-8"
+					style="--accent: {week.accent};"
 				>
-					<em class="italic">one</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">the spark</h3>
-				<p class="text-white/80">
-					define your idea, share it, plant the flag.
-				</p>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
-				>
-					<em class="italic">two</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">the rush</h3>
-				<p class="text-white/80">
-					build the tiny version. ship your prototype.
-				</p>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
-				>
-					<em class="italic">three</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">the feedback loop</h3>
-				<p class="text-white/80">
-					show people. get real reactions. iterate.
-				</p>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
-				>
-					<em class="italic">four</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">it works</h3>
-				<p class="text-white/80">
-					lock in. build until the core actually functions.
-				</p>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
-				>
-					<em class="italic">five</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">put yourself out there</h3>
-				<p class="text-white/80">
-					find real users. share outside hack club.
-				</p>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<p
-					class="text-white/50 text-sm tracking-[0.2em] uppercase mb-3"
-				>
-					<em class="italic">six</em>
-				</p>
-				<h3 class="text-xl md:text-2xl mb-2">unfold</h3>
-				<p class="text-white/80">
-					final ship. polish. launch. tell your story.
-				</p>
-			</article>
+					<p
+						class="text-sm tracking-[0.25em] mb-3"
+						style="color: color-mix(in srgb, var(--accent) 85%, white);"
+					>
+						wk <em class="italic">{week.n}</em>
+					</p>
+					<h3 class="text-xl md:text-2xl mb-2">{week.title}</h3>
+					<p class="text-white/80">{week.body}</p>
+				</article>
+			{/each}
 		</div>
 	</section>
 
 	<section class="py-24 md:py-32">
-		<p class="text-2xl md:text-3xl text-white mb-12 max-w-3xl">
-		along the way, we'll support you with:
+		<p class="mb-3 text-sm tracking-[0.35em] text-(--color-bloom)/80">
+			you ship, we ship
 		</p>
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-			<article class="border border-white/10 p-6 md:p-8">
-				<h3 class="text-xl md:text-2xl mb-4">for your project</h3>
-				<ul class="space-y-2 text-white/80">
-					<li>$10 domain credit in week 2</li>
-					<li>$15–20 hosting/infra credits in week 4</li>
-					<li>discretionary “i need this to ship” grants</li>
-					<li>keep-it-alive credits so it doesn't die after</li>
-				</ul>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<h3 class="text-xl md:text-2xl mb-4">the community</h3>
-				<ul class="space-y-2 text-white/80">
-					<li>circles of 8–10 builders, assigned after week 1</li>
-					<li>weekly lock-in huddles with ambient music</li>
-					<li>workshops and AMAs with people who've shipped</li>
-					<li>optional friday show & tell</li>
-				</ul>
-			</article>
-			<article class="border border-white/10 p-6 md:p-8">
-				<h3 class="text-xl md:text-2xl mb-4">cool merch</h3>
-				<ul class="space-y-2 text-white/80">
+		<h2 class="mb-14 text-3xl md:text-5xl">what we'll give you</h2>
+
+		<div class="grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-3">
+			<article
+				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
+				style="--accent: var(--color-leaf);"
+			>
+				<h3 class="mb-4 text-xl md:text-2xl">for your project</h3>
+				<ul class="space-y-3 leading-relaxed text-white/75">
 					<li>
-						welcome envelope in week 2 — sticker sheet, postcard,
-						bookmark
+						<span class="text-(--color-leaf)">wk 2</span> — $10 domain
+						credit, so it has a home on the interwebz
 					</li>
 					<li>
-						the completer package — exclusive hoodie and postcards
+						<span class="text-(--color-leaf)">wk 4</span> — $15 hosting
+						&amp; infra credits
 					</li>
+					<li>
+						<span class="text-(--color-leaf)">wk 5+</span> — a discretionary
+						grant, for whatever it needs
+					</li>
+				</ul>
+			</article>
+
+			<article
+				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
+				style="--accent: var(--color-ember);"
+			>
+				<h3 class="mb-4 text-xl md:text-2xl">the box ꕥ</h3>
+				<p class="mb-3 text-sm text-white/50">
+					finish, and we mail you the completion package:
+				</p>
+				<ul class="space-y-3 leading-relaxed text-white/75">
+					<li>the unfold hoodie, exclusive to this summer</li>
+					<li>art print by a teen artist</li>
+					<li>other stuff if we have budget lol</li>
+					<li>a handwritten note &lt;3</li>
+				</ul>
+				<p class="mt-4 text-sm text-white/50">
+					(we'll also ship you an unfold sticker sheet if you ship a
+					prototype in week 2!)
+				</p>
+			</article>
+
+			<article
+				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
+				style="--accent: var(--color-sea);"
+			>
+				<h3 class="mb-4 text-xl md:text-2xl">the people</h3>
+				<ul class="space-y-3 leading-relaxed text-white/75">
+					<li>
+						a circle of 8–10 builders who actually know what you're
+						making
+					</li>
+					<li>
+						daily ish lock-in huddles — coworking calls, ambient
+						music, drop in whenever
+					</li>
+					<li>
+						workshops &amp; AMAs with people who've shipped real
+						things
+					</li>
+					<li>frequent show &amp; tells with your fellow hackers</li>
 				</ul>
 			</article>
 		</div>
@@ -198,7 +242,7 @@
 			<p>
 				unfold is for the idea that's been sitting in your notes app.
 				the one you keep saying you'll start. over six weeks, alongside
-				other builders, you'll take it from a sentence to something
+				other hack clubbers, you'll take it from a sentence to something
 				people actually use.
 			</p>
 			<p>
@@ -208,9 +252,20 @@
 				to your project.
 			</p>
 			<p>
-				we're not here to teach you syntax or track your hours. we'll
-				give you the structure, the people, and the deadline to ship
-				something you care about.
+				we're not here to teach you syntax or impose strict hour reqs.
+				we'll give you the structure, the people, and the deadline to
+				ship something you care about.
+			</p>
+			<p>
+				you'll make lifelong friends, grow technical and non-technical
+				skills, and end with a project you'll be proud of forever. i
+				hope to see you in week 1 :)
+			</p>
+			<p>
+				~ hex4, unfold org (<a
+					class="hover:text-white underline decoration-1 cursor-pointer underline-offset-4 transition-all duration-400"
+					>dm on slack!</a
+				>)
 			</p>
 		</div>
 	</section>

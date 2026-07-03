@@ -6,9 +6,14 @@ UNFOLD_OIDC_CLIENT_ID=
 UNFOLD_OIDC_CLIENT_SECRET=
 UNFOLD_OIDC_REDIRECT_URI=http://localhost:5173/api/auth/callback
 
-# --- resend (segment storage; will migrate to a real db later) ---
+# --- resend (welcome email delivery only; participant storage is in airtable) ---
 RESEND_API_KEY=
-RESEND_SEGMENT_ID=
+
+# --- airtable (participant storage) ---
+# personal access token with data.records:write, schema.bases:read
+# create one at https://airtable.com/create/tokens
+AIRTABLE_TOKEN=
+AIRTABLE_BASE_ID=
 
 # --- slack (bot must already be a member of each channel) ---
 # scopes needed: channels:manage (public) and/or groups:write (private)
