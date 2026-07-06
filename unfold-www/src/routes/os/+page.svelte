@@ -2,16 +2,22 @@
 import { onMount } from "svelte";
 import { programClock, WEEKS } from "$lib/week";
 
+// DEV ONLY: hardcode "now" to a date mid-program so we can preview the
+// page in a live state. REMOVE THIS BEFORE SHIPPING — set DEV_NOW to
+// the real wall clock.
+const DEV_NOW: Date | null = null;
+
 // recompute the clock on every animation frame so the deadline ticks
 // down smoothly without spamming $state. a 60fps clock is fine — it's
-// just arithmetic.
-let clock = $state(programClock());
-let now = $state(new Date());
+// just arithmetic. when DEV_NOW is set, we use it for both `now` and
+// the clock computation, so the page shows the fake time consistently.
+let clock = $state(programClock(DEV_NOW ?? new Date()));
+let now = $state(DEV_NOW ?? new Date());
 let raf = 0;
 
 onMount(() => {
 	const tick = () => {
-		now = new Date();
+		now = DEV_NOW ?? new Date();
 		clock = programClock(now);
 		raf = requestAnimationFrame(tick);
 	};
@@ -77,7 +83,7 @@ const deadline = $derived.by(() => {
      it; loop + preload auto so the page doesn't pop a black frame. -->
 <video
 	class="fixed inset-0 w-full h-full object-cover -z-30 pointer-events-none"
-	src="/unfold-bg.mp4"
+	src="/os-bg.mp4"
 	autoplay
 	muted
 	playsinline
@@ -177,6 +183,17 @@ const deadline = $derived.by(() => {
 <main
 	class="relative min-h-screen flex items-center justify-center px-6 font-serif text-white"
 >
+	<!-- doc link: top-right corner. HARDCODED href for now. -->
+	<a
+
+		href="/docs/week-1"
+		aria-label="this week's doc"
+		class="absolute top-14 right-4 md:top-16 md:right-6 z-30 transition-all hover:scale-110"
+	>
+		<img src="/icons/week-1-doc.svg" alt="" class="size-32" />
+		<span class="bg-black block text-center">week 1 info</span>
+	</a>
+
 	<div class="text-center max-w-8xl flex flex-col items-center">
 		<p
 			class="italic text-base md:text-lg tracking-[0.35em] text-(--color-dawn)/85 mb-2"
@@ -193,7 +210,7 @@ const deadline = $derived.by(() => {
 		>
 			{clock.state === 'prelaunch'
 				? 'one day more'
-				: "what's your idea"}
+				: "what's your idea?"}
 		</h1>
 
 		<div class="mt-6 flex flex-col items-center gap-3 w-144">

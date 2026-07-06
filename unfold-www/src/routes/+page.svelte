@@ -1,63 +1,63 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+import { onMount } from "svelte";
 
-	let audio: HTMLAudioElement;
-	let muted = $state(true);
+let audio: HTMLAudioElement;
+let muted = $state(true);
 
-	// the album arc: gold → green → sea → the dark middle → bloom → sunrise
-	const weeks = [
-		{
-			n: "one",
-			title: "first light",
-			body: "decide what you're gonna build & sketch out your idea",
-			accent: "var(--color-dawn)",
-		},
-		{
-			n: "two",
-			title: "the prototype",
-			body: "build the tiniest possible version, then ship it",
-			accent: "var(--color-leaf)",
-		},
-		{
-			n: "three",
-			title: "show n tell",
-			body: "share your prototype, get thoughts, build on them.",
-			accent: "var(--color-sea)",
-		},
-		{
-			n: "four",
-			title: "midnight",
-			body: "lock in to build the bulk of your project.",
-			accent: "var(--color-dusk)",
-		},
-		{
-			n: "five",
-			title: "find your ppl",
-			body: "find real users, iterate on feedback, and polish your work.",
-			accent: "var(--color-bloom)",
-		},
-		{
-			n: "six",
-			title: "unfold",
-			body: "your final ship. share with the world",
-			accent: "var(--color-ember)",
-		},
-	];
+// the album arc: gold → green → sea → the dark middle → bloom → sunrise
+const weeks = [
+	{
+		n: "one",
+		title: "first light",
+		body: "decide what you're gonna build & sketch out your idea",
+		accent: "var(--color-dawn)",
+	},
+	{
+		n: "two",
+		title: "the prototype",
+		body: "build the tiniest possible version, then ship it",
+		accent: "var(--color-leaf)",
+	},
+	{
+		n: "three",
+		title: "show n tell",
+		body: "share your prototype, get thoughts, build on them.",
+		accent: "var(--color-sea)",
+	},
+	{
+		n: "four",
+		title: "midnight",
+		body: "lock in to build the bulk of your project.",
+		accent: "var(--color-dusk)",
+	},
+	{
+		n: "five",
+		title: "find your ppl",
+		body: "find real users, iterate on feedback, and polish your work.",
+		accent: "var(--color-bloom)",
+	},
+	{
+		n: "six",
+		title: "unfold",
+		body: "your final ship. share with the world",
+		accent: "var(--color-ember)",
+	},
+];
 
-	onMount(() => {
-		if (!audio) return;
-		audio.muted = true;
-		audio.volume = 0.3;
-		audio.play().catch(() => {
-			// autoplay blocked (common without a prior user gesture) — silently
-			// leave it paused; the mute toggle is the explicit opt-in.
-		});
+onMount(() => {
+	if (!audio) return;
+	audio.muted = true;
+	audio.volume = 0.3;
+	audio.play().catch(() => {
+		// autoplay blocked (common without a prior user gesture) — silently
+		// leave it paused; the mute toggle is the explicit opt-in.
 	});
+});
 
-	function toggleMute() {
-		muted = !muted;
-		audio.muted = muted;
-	}
+function toggleMute() {
+	muted = !muted;
+	audio.muted = muted;
+}
 </script>
 
 <video
@@ -89,7 +89,7 @@
 ></div>
 
 <div
-	class="fixed inset-0 -z-10 pointer-events-none mix-blend-soft-light opacity-50 bg-repeat animate-[film-grain_0.8s_linear_infinite]"
+	class="fixed inset-0 -z-10 pointer-events-none mix-blend-soft-light opacity-30 bg-repeat animate-[film-grain_0.8s_linear_infinite]"
 	style="background-image: url('/grain.png'); background-size: 256px 256px; image-rendering: pixelated;"
 ></div>
 
