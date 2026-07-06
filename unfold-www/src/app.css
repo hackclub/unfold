@@ -59,6 +59,25 @@
 	}
 }
 
+/* film grain shake — discrete jumps to random-feeling offsets so the
+   texture feels alive without going seizure-y. 8 stops over 0.8s with
+   steps() timing = ~10hz jitter, each step 2-4 grain chunks at the
+   4px-chunk source resolution. */
+@keyframes film-grain {
+	/* step-end on each keyframe = hold the value until the next stop,
+	   then jump. this is what makes the shake discrete instead of
+	   sliding. */
+	0%   { background-position:   0px   0px; animation-timing-function: step-end; }
+	12%  { background-position: -32px  48px; animation-timing-function: step-end; }
+	25%  { background-position:  64px -16px; animation-timing-function: step-end; }
+	37%  { background-position: -16px -64px; animation-timing-function: step-end; }
+	50%  { background-position: -48px  32px; animation-timing-function: step-end; }
+	62%  { background-position:  16px  64px; animation-timing-function: step-end; }
+	75%  { background-position:  48px -48px; animation-timing-function: step-end; }
+	87%  { background-position: -64px -32px; animation-timing-function: step-end; }
+	100% { background-position:   0px   0px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

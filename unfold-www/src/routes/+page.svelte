@@ -89,8 +89,8 @@
 ></div>
 
 <div
-	class="fixed inset-0 -z-10 pointer-events-none mix-blend-overlay bg-repeat bg-[length:250px_250px] animate-[grain_0.5s_steps(10)_infinite]"
-	style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E&quot;);"
+	class="fixed inset-0 -z-10 pointer-events-none mix-blend-soft-light opacity-50 bg-repeat animate-[film-grain_0.8s_linear_infinite]"
+	style="background-image: url('/grain.png'); background-size: 256px 256px; image-rendering: pixelated;"
 ></div>
 
 <audio bind:this={audio} src="/Lifelike.mp3" preload="auto" loop></audio>
