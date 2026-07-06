@@ -25,6 +25,7 @@
 		"wrangler": "^4.97.0"
 	},
 	"dependencies": {
+		"html-to-image": "^1.11.13",
 		"resend": "^6.16.0"
 	}
 }
