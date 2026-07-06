@@ -3,7 +3,7 @@
 
 	const backgrounds = [
 		'1.png', '2.png', '3.png', '4.png',
-		'5.png', '6.png', '7.png', '8.png'
+		'5.png', '6.png', '7.png', '8.png', '9.png'
 	];
 
 	let projectName = $state('project name');
@@ -61,8 +61,9 @@
 
 <main class="relative min-h-screen flex flex-col items-center px-6 py-12 font-serif text-white bg-black">
 	<!-- back link -->
-	<nav class="w-full max-w-4xl flex items-center py-6 text-xs tracking-[0.25em] text-white/70">
+	<nav class="w-full max-w-4xl flex items-center justify-between py-6 text-xs tracking-[0.25em] text-white/70">
 		<a href="/" class="hover:text-white/100 transition-colors">← back to home</a>
+		<a href="/os" class="hover:text-white/100 transition-colors">back to os →</a>
 	</nav>
 
 	<!-- slide preview -->

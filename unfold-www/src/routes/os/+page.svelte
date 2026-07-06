@@ -183,16 +183,25 @@ const deadline = $derived.by(() => {
 <main
 	class="relative min-h-screen flex items-center justify-center px-6 font-serif text-white"
 >
-	<!-- doc link: top-right corner. HARDCODED href for now. -->
-	<a
-
-		href="/docs/week-1"
-		aria-label="this week's doc"
-		class="absolute top-14 right-4 md:top-16 md:right-6 z-30 transition-all hover:scale-110"
-	>
-		<img src="/icons/week-1-doc.svg" alt="" class="size-32" />
-		<span class="bg-black block text-center">week 1 info</span>
-	</a>
+	<!-- doc + generate links: top-right corner -->
+	<div class="absolute top-14 right-4 md:top-16 md:right-6 z-30 flex flex-col gap-6">
+		<a
+			href="/docs/week-1"
+			aria-label="this week's doc"
+			class="transition-all hover:scale-110"
+		>
+			<img src="/icons/week-1-doc.svg" alt="" class="size-32 mx-auto" />
+			<span class="bg-black block text-center">week 1 info</span>
+		</a>
+		<a
+			href="/generate"
+			aria-label="generate slide"
+			class="transition-all hover:scale-110"
+		>
+			<img src="/icons/generate.svg" alt="" class="size-32 mx-auto" />
+			<span class="bg-black block text-center">generate idea slide</span>
+		</a>
+	</div>
 
 	<div class="text-center max-w-8xl flex flex-col items-center">
 		<p

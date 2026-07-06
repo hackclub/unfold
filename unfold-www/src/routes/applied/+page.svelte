@@ -21,10 +21,10 @@
 	<h1 class="text-4xl md:text-6xl tracking-[0.25em] mb-8">unfold</h1>
 
 	<p class="text-lg md:text-2xl text-white/80 max-w-xl mb-6 leading-relaxed">
-		welcome to unfold. check slack — we just added you to the channels.
+		welcome to unfold. check your email - we've sent you all the info ya need to get started.
 	</p>
 	<p class="text-lg md:text-2xl text-white/80 max-w-xl mb-16">
-		see you in july :D
+		see you soon :D
 	</p>
 
 	<p class="text-4xl md:text-6xl text-white/80 mb-24">ꕥ</p>
