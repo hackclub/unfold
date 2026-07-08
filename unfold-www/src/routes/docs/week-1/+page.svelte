@@ -138,7 +138,7 @@
 			<li>generate your idea slide <a href="/generate" class="underline decoration-1 underline-offset-4 hover:text-white hover:tracking-[0.2em] transition-[colors,letter-spacing] duration-500">here</a></li>
 			<li>create an empty github repo and write a bit about your idea in the readme</li>
 			<li>post in <a href="https://hackclub.enterprise.slack.com/archives/C0B0A5X5B27" class="underline decoration-1 underline-offset-4 hover:text-white hover:tracking-[0.2em] transition-[colors,letter-spacing] duration-500">#unfold-ships</a> and hype each other up!!</li>
-			<li>wait for us to finish the submission form lol (we will email + ping once its done dw)</li>
+			<li>fill out the <a href="https://forms.hackclub.com/unfold-week-1" class="underline decoration-1 underline-offset-4 hover:text-white hover:tracking-[0.2em] transition-[colors,letter-spacing] duration-500">submission form</a> for this week's ship!</li>
 		</ul>
 
 		<h3 class="text-3xl md:text-5xl tracking-[0.15em] text-(--color-dawn) mt-16 mb-6 text-pretty">
@@ -263,11 +263,11 @@
 		</p>
 
 		<p class="mb-6">
-			and finally, you'll submit a form with a bit more info on what you're making later in the week. we'll use this info to form a circle, a small group of 5-7 hackers working on similar things for the program! you'll be added to your circle's private channel next week. it's a lot easier to show up and keep shipping when there are people around you that care about what you're making, and we hope to make that come built-in with circles :D
+			and finally, submit this form with a bit more info on what you're making. we'll use this info to form a circle, a small group of 5-7 hackers working on similar things for the program! you'll be added to your circle's private channel next week. it's a lot easier to show up and keep shipping when there are people around you that care about what you're making, and we hope to make that come built-in with circles :D
 		</p>
 
-		<p class="mb-6 italic text-white/50">
-		(where's the form? uh it's not done yet LOL. we will add it here & to unfold os, email, and ping yall when it's ready!! promise!)
+		<p>
+			<a href="https://forms.hackclub.com/unfold-week-1" class="underline decoration-1 underline-offset-4 hover:text-white hover:tracking-[0.2em] transition-[colors,letter-spacing] duration-500">submit week 1 ship →</a>
 		</p>
 
 		<p class="mt-16 text-xl tracking-[0.05em] text-white">

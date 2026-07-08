@@ -224,10 +224,11 @@ const deadline = $derived.by(() => {
 
 		<div class="mt-6 flex flex-col items-center gap-3 w-144">
 			<a
-				href="https://youtu.be/r6myB0q5x2c?t=178"
+				href="https://forms.hackclub.com/unfold-week-1"
 				class="group block max-w-xl text-center text-xl md:text-2xl underline decoration-1 underline-offset-[6px] hover:tracking-widest transition-[letter-spacing] duration-500"
+				target="_blank"
 			>
-				hi i haven't finished the submission form yet so this link leads somewhere else →
+				submit for week 1 →
 			</a>
 
 			{#if clock.state !== 'ended'}
