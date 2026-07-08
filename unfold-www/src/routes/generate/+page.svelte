@@ -1,52 +1,61 @@
 <script lang="ts">
-	import { toPng } from 'html-to-image';
+import { toPng } from "html-to-image";
 
-	const backgrounds = [
-		'1.png', '2.png', '3.png', '4.png',
-		'5.png', '6.png', '7.png', '8.png', '9.png'
-	];
+const backgrounds = [
+	"1.png",
+	"2.png",
+	"3.png",
+	"4.png",
+	"5.png",
+	"6.png",
+	"7.png",
+	"8.png",
+	"9.png",
+];
 
-	let projectName = $state('project name');
-	let title = $state('put your one liner here');
-	let subtitle = $state('and elaborate a bit down here');
-	let bgIndex = $state(0);
-	let slideRef = $state<HTMLDivElement | null>(null);
-	let downloading = $state(false);
+let projectName = $state("project name");
+let title = $state("put your one liner here");
+let subtitle = $state("and elaborate a bit down here");
+let bgIndex = $state(0);
+let slideRef = $state<HTMLDivElement | null>(null);
+let downloading = $state(false);
 
-	function next() {
-		bgIndex = (bgIndex + 1) % backgrounds.length;
+function next() {
+	bgIndex = (bgIndex + 1) % backgrounds.length;
+}
+
+function prev() {
+	bgIndex = (bgIndex - 1 + backgrounds.length) % backgrounds.length;
+}
+
+async function download() {
+	if (!slideRef) return;
+	downloading = true;
+	try {
+		await document.fonts.ready;
+		const grainEl = slideRef.querySelector(
+			"[data-grain]",
+		) as HTMLElement | null;
+		const oldSize = grainEl?.style?.backgroundSize;
+		if (grainEl) grainEl.style.backgroundSize = "512px 512px";
+		grainEl?.getBoundingClientRect();
+		await new Promise((r) => requestAnimationFrame(r));
+		const dataUrl = await toPng(slideRef, {
+			cacheBust: true,
+			pixelRatio: 2,
+		});
+		if (grainEl) grainEl.style.backgroundSize = oldSize ?? "";
+		const link = document.createElement("a");
+		const safeName = projectName.replace(/\s+/g, "-").toLowerCase() || "slide";
+		link.download = `unfold-${safeName}.png`;
+		link.href = dataUrl;
+		link.click();
+	} catch (err) {
+		console.error("failed to generate image:", err);
+	} finally {
+		downloading = false;
 	}
-
-	function prev() {
-		bgIndex = (bgIndex - 1 + backgrounds.length) % backgrounds.length;
-	}
-
-	async function download() {
-		if (!slideRef) return;
-		downloading = true;
-		try {
-			await document.fonts.ready;
-			const grainEl = slideRef.querySelector('[data-grain]') as HTMLElement | null;
-			const oldSize = grainEl?.style?.backgroundSize;
-			if (grainEl) grainEl.style.backgroundSize = '512px 512px';
-			grainEl?.getBoundingClientRect();
-			await new Promise(r => requestAnimationFrame(r));
-			const dataUrl = await toPng(slideRef, {
-				cacheBust: true,
-				pixelRatio: 2
-			});
-			if (grainEl) grainEl.style.backgroundSize = oldSize ?? '';
-			const link = document.createElement('a');
-			const safeName = projectName.replace(/\s+/g, '-').toLowerCase() || 'slide';
-			link.download = `unfold-${safeName}.png`;
-			link.href = dataUrl;
-			link.click();
-		} catch (err) {
-			console.error('failed to generate image:', err);
-		} finally {
-			downloading = false;
-		}
-	}
+}
 </script>
 
 <svelte:head>
@@ -81,7 +90,6 @@
 			<div
 				bind:this={slideRef}
 				class="relative overflow-hidden bg-black flex-1"
-				style="aspect-ratio: 191/100;"
 			>
 				<!-- background image -->
 				{#key bgIndex}
@@ -97,7 +105,7 @@
 				<div class="absolute inset-0 bg-black/50" aria-hidden="true"></div>
 
 				<!-- text stack -->
-				<div class="absolute inset-0 flex flex-col justify-between p-6 md:p-10 lg:p-12">
+				<div class="relative flex flex-col justify-between p-6 md:p-10 lg:p-12">
 					<!-- top row -->
 					<div class="flex justify-between items-center">
 						<span class="text-white/90 text-base md:text-lg lg:text-xl tracking-[0.1em]">
@@ -111,7 +119,7 @@
 					</div>
 
 					<!-- center text -->
-					<div class="text-center flex-1 flex flex-col justify-center">
+					<div class="text-center flex-1 flex flex-col justify-center my-4 md:my-6 lg:my-8">
 						<h1
 							class="text-white text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] tracking-[0.05em]"
 							style="text-wrap: balance;"
