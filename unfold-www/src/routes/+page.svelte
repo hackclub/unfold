@@ -303,7 +303,7 @@ function toggleMute() {
 	</section>
 
 	<section class="py-24 md:py-32 text-center">
-		<p class="text-2xl md:text-4xl mb-10">week 1 started july 6.</p>
+		<p class="text-2xl md:text-4xl mb-10">week 1 has started. you can still join!</p>
 		<a
 			href="/apply"
 			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"
