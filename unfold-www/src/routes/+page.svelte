@@ -136,7 +136,7 @@ function toggleMute() {
 			<em class="italic">real</em> in 6 weeks.
 		</p>
 		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
-			week 1 starts july 6. fully online. a <a
+			week 1 started july 6. fully online. a <a
 				href="https://hackclub.com"
 				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
 				target="_blank"
@@ -303,7 +303,7 @@ function toggleMute() {
 	</section>
 
 	<section class="py-24 md:py-32 text-center">
-		<p class="text-2xl md:text-4xl mb-10">week 1 starts july 6.</p>
+		<p class="text-2xl md:text-4xl mb-10">week 1 started july 6.</p>
 		<a
 			href="/apply"
 			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"
