@@ -4,6 +4,17 @@ import { onMount } from "svelte";
 let audio: HTMLAudioElement;
 let muted = $state(true);
 
+// sign-ups close at the end of sunday jul 12 — midnight local = mon jul 13 00:00
+const SIGNUP_DEADLINE_MS = new Date(2026, 6, 13, 0, 0, 0, 0).getTime();
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+let daysLeft = $state<string | null>(null);
+
+function tickCountdown() {
+	const remaining = SIGNUP_DEADLINE_MS - Date.now();
+	daysLeft = remaining <= 0 ? "0.00000" : (remaining / MS_PER_DAY).toFixed(5);
+}
+
 // the album arc: gold → green → sea → the dark middle → bloom → sunrise
 const weeks = [
 	{
@@ -45,13 +56,19 @@ const weeks = [
 ];
 
 onMount(() => {
-	if (!audio) return;
-	audio.muted = true;
-	audio.volume = 0.3;
-	audio.play().catch(() => {
-		// autoplay blocked (common without a prior user gesture) — silently
-		// leave it paused; the mute toggle is the explicit opt-in.
-	});
+	tickCountdown();
+	const countdownId = setInterval(tickCountdown, 100);
+
+	if (audio) {
+		audio.muted = true;
+		audio.volume = 0.3;
+		audio.play().catch(() => {
+			// autoplay blocked (common without a prior user gesture) — silently
+			// leave it paused; the mute toggle is the explicit opt-in.
+		});
+	}
+
+	return () => clearInterval(countdownId);
 });
 
 function toggleMute() {
@@ -133,12 +150,21 @@ function toggleMute() {
 			>
 				sign up →
 			</a>
-			<a
-				href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ"
-				class="text-lg md:text-xl text-white/60 underline decoration-1 underline-offset-4 hover:text-white transition-colors w-fit"
-			>
-				join #unfold on the hack club slack
-			</a>
+			<div class="flex flex-col gap-1.5">
+				<span
+					class="text-lg md:text-xl text-white/80 w-fit"
+				>
+					you can still join us and choose your idea by sunday, even though week 1 has already started.
+				</span>
+				{#if daysLeft !== null}
+					<p
+						class="text-base md:text-lg text-white/60 tabular-nums"
+						aria-live="polite"
+					>
+						sign-ups close in {daysLeft} days
+					</p>
+				{/if}
+			</div>
 		</div>
 	</section>
 
