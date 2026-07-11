@@ -141,7 +141,32 @@ function toggleMute() {
 				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
 				target="_blank"
 				rel="noopener noreferrer">hack club</a
-			> program.
+			> program, by
+			<a
+				href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R"
+				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-dawn)"
+				target="_blank"
+				rel="noopener noreferrer">neven</a
+			>,
+			<a
+				href="https://hackclub.enterprise.slack.com/team/U07VA44DNBA"
+				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-leaf)"
+				target="_blank"
+				rel="noopener noreferrer">mat</a
+			>,
+			<a
+				href="https://hackclub.enterprise.slack.com/team/U0926UASBJ7"
+				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-sea)"
+				target="_blank"
+				rel="noopener noreferrer">jenin</a
+			>
+			&amp;
+			<a
+				href="https://hackclub.enterprise.slack.com/team/U08RWM5U4L9"
+				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-dusk)"
+				target="_blank"
+				rel="noopener noreferrer">dhamari</a
+			>.
 		</p>
 		<div class="mt-14 flex flex-col gap-5">
 			<a
