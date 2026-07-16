@@ -3,10 +3,10 @@
 // and anything else that cares about the program clock.
 //
 // the whole program runs in the user's local timezone. week 1 starts on
-// the user's local monday, july 6 2026. each week ends on the user's
+// the user's local monday, july 13 2026. each week ends on the user's
 // local sunday at 23:59:59.
 
-const PROGRAM_START = new Date(2026, 6, 6); // jul 6 2026, local
+const PROGRAM_START = new Date(2026, 6, 13); // jul 13 2026, local
 const PROGRAM_START_MS = PROGRAM_START.getTime();
 const DAY_MS = 86_400_000;
 const WEEK_MS = 7 * DAY_MS;
@@ -17,7 +17,7 @@ export interface ProgramClock {
 	msToDeadline: number;
 	// same thing, as fractional days for the count-up display
 	daysToDeadline: number;
-	// ms until the program starts (jul 6 2026 local). only meaningful
+	// ms until the program starts (jul 13 2026 local). only meaningful
 	// in the prelaunch state; 0 once we're live.
 	msToStart: number;
 	daysToStart: number;

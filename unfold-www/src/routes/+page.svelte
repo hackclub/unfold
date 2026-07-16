@@ -4,8 +4,8 @@ import { onMount } from "svelte";
 let audio: HTMLAudioElement;
 let muted = $state(true);
 
-// sign-ups close at the end of sunday jul 12 — midnight local = mon jul 13 00:00
-const SIGNUP_DEADLINE_MS = new Date(2026, 6, 13, 0, 0, 0, 0).getTime();
+// sign-ups close at the end of sunday jul 19 — midnight local = mon jul 20 00:00
+const SIGNUP_DEADLINE_MS = new Date(2026, 6, 20, 0, 0, 0, 0).getTime();
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 let daysLeft = $state<string | null>(null);
@@ -136,7 +136,7 @@ function toggleMute() {
 			<em class="italic">real</em> in 6 weeks.
 		</p>
 		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
-			week 1 started july 6. fully online. a <a
+			week 1 starts july 13. fully online. a <a
 				href="https://hackclub.com"
 				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
 				target="_blank"
@@ -176,11 +176,7 @@ function toggleMute() {
 				sign up →
 			</a>
 			<div class="flex flex-col gap-1.5">
-				<span
-					class="text-lg md:text-xl text-white/80 w-fit"
-				>
-					you can still join us and choose your idea by sunday, even though week 1 has already started.
-				</span>
+
 				{#if daysLeft !== null}
 					<p
 						class="text-base md:text-lg text-white/60 tabular-nums"
@@ -328,7 +324,7 @@ function toggleMute() {
 	</section>
 
 	<section class="py-24 md:py-32 text-center">
-		<p class="text-2xl md:text-4xl mb-10">week 1 has started. you can still join!</p>
+		<p class="text-2xl md:text-4xl mb-10">week 1 starts monday.</p>
 		<a
 			href="/apply"
 			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"

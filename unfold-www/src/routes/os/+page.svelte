@@ -15,7 +15,21 @@ let clock = $state(programClock(DEV_NOW ?? new Date()));
 let now = $state(DEV_NOW ?? new Date());
 let raf = 0;
 
+// schedule-update notice. shows once per browser (localStorage) until
+// the user dismisses it OR week 1 goes live, whichever comes first.
+// hidden from the very first render to avoid a flash when the user
+// already dismissed it on a prior visit.
+let noticeOpen = $state(false);
+const NOTICE_KEY = "unfold:schedule-notice-dismissed";
+
 onMount(() => {
+	// hide the notice if it was dismissed on a prior visit, or if the
+	// program has already started (the news is stale by then).
+	const dismissed = localStorage.getItem(NOTICE_KEY) === "1";
+	if (!dismissed && clock.state === "prelaunch") {
+		noticeOpen = true;
+	}
+
 	const tick = () => {
 		now = DEV_NOW ?? new Date();
 		clock = programClock(now);
@@ -24,6 +38,16 @@ onMount(() => {
 	raf = requestAnimationFrame(tick);
 	return () => cancelAnimationFrame(raf);
 });
+
+function dismissNotice() {
+	noticeOpen = false;
+	try {
+		localStorage.setItem(NOTICE_KEY, "1");
+	} catch {
+		// localStorage can throw in private modes / quota — failing
+		// silently is fine; the notice just won't persist dismiss.
+	}
+}
 
 // hh:mm:ss in the user's local tz. monospace-width digits via the
 // tracking-widest font + tabular-nums.
@@ -245,4 +269,33 @@ const deadline = $derived.by(() => {
 			{/if}
 		</div>
 	</div>
+
+	<!-- schedule-update notice. bottom-left, matches the top-right icon
+	     cluster's vibe (border + accent + soft black fill + blur). dismiss
+	     sticks in localStorage so it only shows once per browser. -->
+	{#if noticeOpen}
+		<aside
+			class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-30 max-w-sm bg-black/40 backdrop-blur-sm p-4 md:p-5 font-serif text-white"
+			aria-label="schedule update"
+		>
+			<p
+				class="text-sm tracking-[0.3em] text-(--color-dawn)/85 mb-2 flex items-center gap-2"
+			>
+				<span aria-hidden="true">✦</span>
+				<span>schedule update</span>
+			</p>
+			<p class="text-sm md:text-base text-white/85 leading-relaxed mb-3">
+				unfold's been pushed back a week. new week 1 starts
+				<strong class="font-semibold text-white">mon, jul 13</strong>.
+				still 6 weeks, still ships every sunday. if you've already shipped in week 1, your ship still counts and you can keep planning :)
+			</p>
+			<button
+				type="button"
+				onclick={dismissNotice}
+				class="text-sm tracking-[0.2em] text-white/70 underline decoration-1 underline-offset-4 hover:text-white transition-colors"
+			>
+				got it
+			</button>
+		</aside>
+	{/if}
 </main>
