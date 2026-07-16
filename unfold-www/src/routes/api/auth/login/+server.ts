@@ -15,8 +15,8 @@ function randomState(bytes = 32): string {
 		.replace(/=+$/, '');
 }
 
-export const GET: RequestHandler = ({ cookies, platform }) => {
-	const env = getEnv(platform?.env);
+export const GET: RequestHandler = ({ cookies }) => {
+	const env = getEnv();
 	const state = randomState();
 
 	// stash state in a short-lived, httpOnly cookie so we can verify on callback

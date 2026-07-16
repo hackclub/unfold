@@ -1,29 +1,27 @@
-// env helper for sveltekit + @sveltejs/adapter-cloudflare.
+// env helper for sveltekit + @sveltejs/adapter-node.
 //
-// in sveltekit, cloudflare bindings are exposed on the per-request
-// `event.platform.env`. this is the typed App.Platform['env'] (see
-// src/app.d.ts + wrangler.jsonc) and works in both `vite dev` and
-// production workerd.
+// in sveltekit, env vars are accessed via $env/dynamic/private, which reads
+// from process.env at runtime. this works in both `vite dev` and production
+// (node server in a container).
 //
-// locally, secrets live in `.dev.vars` (not `.env`). non-secret vars
-// can live in `wrangler.jsonc` under "vars".
+// locally, secrets live in `.env`. in production, inject them as environment
+// variables into the container at runtime.
+
+import { env as privEnv } from '$env/dynamic/private';
 
 export interface UnfoldEnv {
 	UNFOLD_OIDC_CLIENT_ID: string;
 	UNFOLD_OIDC_CLIENT_SECRET: string;
 	UNFOLD_OIDC_REDIRECT_URI: string;
-	RESEND_API_KEY: string;
 	AIRTABLE_TOKEN: string;
 	AIRTABLE_BASE_ID: string;
 	SLACK_BOT_TOKEN: string;
 	UNFOLD_SLACK_CHANNEL_IDS: string; // comma-separated
 }
 
-export function getEnv(platformEnv: unknown): UnfoldEnv {
-	const e = platformEnv as Record<string, string | undefined>;
-
+export function getEnv(): UnfoldEnv {
 	const get = (k: keyof UnfoldEnv): string => {
-		const v = e[k];
+		const v = privEnv[k];
 		if (!v) throw new Error(`missing required env var: ${k}`);
 		return v;
 	};
@@ -32,7 +30,6 @@ export function getEnv(platformEnv: unknown): UnfoldEnv {
 		UNFOLD_OIDC_CLIENT_ID: get('UNFOLD_OIDC_CLIENT_ID'),
 		UNFOLD_OIDC_CLIENT_SECRET: get('UNFOLD_OIDC_CLIENT_SECRET'),
 		UNFOLD_OIDC_REDIRECT_URI: get('UNFOLD_OIDC_REDIRECT_URI'),
-		RESEND_API_KEY: get('RESEND_API_KEY'),
 		AIRTABLE_TOKEN: get('AIRTABLE_TOKEN'),
 		AIRTABLE_BASE_ID: get('AIRTABLE_BASE_ID'),
 		SLACK_BOT_TOKEN: get('SLACK_BOT_TOKEN'),

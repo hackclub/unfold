@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-bun x sv@0.16.1 create --template minimal --types ts --add tailwindcss="plugins:none" sveltekit-adapter="adapter:cloudflare+cfTarget:workers" --install bun unfold-www
+bun x sv@0.16.1 create --template minimal --types ts --add tailwindcss="plugins:none" sveltekit-adapter="adapter:node" --install bun unfold-www
 ```
 
 ## Developing
@@ -34,9 +34,15 @@ npm run dev -- --open
 To create a production version of your app:
 
 ```sh
-npm run build
+bun run build
 ```
 
-You can preview the production build with `npm run preview`.
+This outputs a self-contained Node server to `build/`. Start it with:
+
+```sh
+bun run start   # or: node build
+```
+The server respects `PORT` and `ORIGIN` environment variables. In production,
+inject the secrets listed in `.env.example` as environment variables.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

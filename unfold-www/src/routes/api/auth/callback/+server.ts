@@ -1,7 +1,6 @@
 import { redirect, isRedirect } from '@sveltejs/kit';
 import { getEnv } from '$lib/server/env';
 import { createOrUpdateParticipant } from '$lib/server/airtable';
-import { sendWelcomeEmail } from '$lib/server/resend';
 import { inviteUserToChannels } from '$lib/server/slack';
 import type { RequestHandler } from './$types';
 
@@ -26,8 +25,8 @@ interface UserInfo {
 	slack_id?: string;
 }
 
-export const GET: RequestHandler = async ({ url, cookies, platform }) => {
-	const env = getEnv(platform?.env);
+export const GET: RequestHandler = async ({ url, cookies }) => {
+	const env = getEnv();
 
 	const code = url.searchParams.get('code');
 	const state = url.searchParams.get('state');
@@ -112,7 +111,6 @@ export const GET: RequestHandler = async ({ url, cookies, platform }) => {
 			hcaSub: user.sub,
 			stage: 'Signup'
 		}),
-		sendWelcomeEmail({ apiKey: env.RESEND_API_KEY, email: user.email }),
 		user.slack_id
 			? inviteUserToChannels({ botToken: env.SLACK_BOT_TOKEN, userId: user.slack_id, channelIds })
 			: Promise.resolve()
