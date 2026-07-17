@@ -15,10 +15,11 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# adapter-node output needs build/, package.json, and node_modules
+# adapter-node bundles its own server deps; the build/ output is self-contained.
+# only production deps (if any) are needed alongside it.
+COPY --from=build /app/package.json /app/bun.lock ./
+RUN bun install --production --frozen-lockfile
 COPY --from=build /app/build ./build
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package.json ./
 
 EXPOSE 3000
 CMD ["bun", "./build/index.js"]
