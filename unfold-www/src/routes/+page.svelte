@@ -4,8 +4,8 @@ import { onMount } from "svelte";
 let audio: HTMLAudioElement;
 let muted = $state(true);
 
-// sign-ups close at the end of sunday jul 19 — midnight local = mon jul 20 00:00
-const SIGNUP_DEADLINE_MS = new Date(2026, 6, 20, 0, 0, 0, 0).getTime();
+// sign-ups close at the end of tuesday jul 21 — midnight local = wed jul 22 00:00
+const SIGNUP_DEADLINE_MS = new Date(2026, 6, 22, 0, 0, 0, 0).getTime();
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 let daysLeft = $state<string | null>(null);
@@ -136,7 +136,7 @@ function toggleMute() {
 			<em class="italic">real</em> in 6 weeks.
 		</p>
 		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
-			week 1 starts july 13. fully online. a <a
+			week 1 started july 13, but you can still join us! fully online. a <a
 				href="https://hackclub.com"
 				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
 				target="_blank"
@@ -144,37 +144,43 @@ function toggleMute() {
 			> program, by
 			<a
 				href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R"
-				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-dawn)"
+				class="transition-colors duration-300 hover:text-(--color-dawn)"
 				target="_blank"
 				rel="noopener noreferrer">neven</a
 			>,
 			<a
 				href="https://hackclub.enterprise.slack.com/team/U07VA44DNBA"
-				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-leaf)"
+				class="transition-colors duration-300 hover:text-(--color-leaf)"
 				target="_blank"
 				rel="noopener noreferrer">mat</a
 			>,
 			<a
 				href="https://hackclub.enterprise.slack.com/team/U0926UASBJ7"
-				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-sea)"
+				class="transition-colors duration-300 hover:text-(--color-sea)"
 				target="_blank"
 				rel="noopener noreferrer">jenin</a
 			>
 			&amp;
 			<a
 				href="https://hackclub.enterprise.slack.com/team/U08RWM5U4L9"
-				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-dusk)"
+				class="transition-colors duration-300 hover:text-(--color-dusk)"
 				target="_blank"
 				rel="noopener noreferrer">dhamari</a
-			>.
+		>.
+			<a
+				href="https://www.youtube.com/watch?v=Q8Iexi4m1tQ"
+				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-ember)"
+				target="_blank"
+				rel="noopener noreferrer">watch the film →</a
+			>
 		</p>
 		<div class="mt-14 flex flex-col gap-5">
 			<a
 				href="/apply"
 				class="text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500 w-fit"
 			>
-				sign up →
-			</a>
+				still want in? →
+		</a>
 			<div class="flex flex-col gap-1.5">
 
 				{#if daysLeft !== null}
@@ -182,7 +188,7 @@ function toggleMute() {
 						class="text-base md:text-lg text-white/60 tabular-nums"
 						aria-live="polite"
 					>
-						sign-ups close in {daysLeft} days
+						<em>late</em> sign-ups close in {daysLeft} days
 					</p>
 				{/if}
 			</div>
@@ -324,12 +330,12 @@ function toggleMute() {
 	</section>
 
 	<section class="py-24 md:py-32 text-center">
-		<p class="text-2xl md:text-4xl mb-10">week 1 starts monday.</p>
+		<p class="text-2xl md:text-4xl mb-10">late sign-ups are still open.</p>
 		<a
 			href="/apply"
 			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"
 		>
-			sign up →
+			join us →
 		</a>
 	</section>
 
@@ -337,9 +343,46 @@ function toggleMute() {
 		<p class="text-4xl md:text-6xl mb-8">ꕥ</p>
 		<a
 			href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ"
-			class="text-sm tracking-[0.2em] underline decoration-1 underline-offset-4 hover:text-white transition-colors"
+			class="text-sm text-white tracking-[0.2em] underline decoration-1 underline-offset-4 hover:tracking-[0.35em] transition-[letter-spacing] duration-500"
 		>
 			#unfold on hack club slack
 		</a>
+		<div class="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm tracking-[0.15em]">
+		<a
+			href="https://www.youtube.com/@hackclub_unfold"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="underline decoration-1 underline-offset-4 text-(--color-ember) hover:text-white transition-colors"
+		>
+			youtube
+		</a>
+			<span>·</span>
+			<a
+				href="https://x.com/hackclub_unfold"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline decoration-1 underline-offset-4 text-(--color-sea) hover:text-white transition-colors"
+			>
+				twitter
+			</a>
+			<span>·</span>
+			<a
+				href="https://bsky.app/profile/unfold.garden"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline decoration-1 underline-offset-4 text-(--color-dawn) hover:text-white transition-colors"
+			>
+				bluesky
+			</a>
+			<span>·</span>
+			<a
+				href="https://www.instagram.com/unfold.hackclub/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline decoration-1 underline-offset-4 text-(--color-bloom) hover:text-white transition-colors"
+			>
+				instagram
+			</a>
+		</div>
 	</footer>
 </main>
