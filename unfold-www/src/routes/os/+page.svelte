@@ -201,7 +201,7 @@ const deadline = $derived.by(() => {
 			aria-label="this week's doc"
 			class="transition-all hover:scale-110"
 		>
-			<img src="/icons/week-1-doc.svg" alt="" class="size-32 mx-auto" />
+			<img src="/icons/week-2-icon.svg" alt="" class="size-32 mx-auto" />
 			<span class="bg-black block text-center">week {current.n} info</span>
 		</a>
 	</div>
