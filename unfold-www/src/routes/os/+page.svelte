@@ -15,21 +15,7 @@ let clock = $state(programClock(DEV_NOW ?? new Date()));
 let now = $state(DEV_NOW ?? new Date());
 let raf = 0;
 
-// schedule-update notice. shows once per browser (localStorage) until
-// the user dismisses it OR week 1 goes live, whichever comes first.
-// hidden from the very first render to avoid a flash when the user
-// already dismissed it on a prior visit.
-let noticeOpen = $state(false);
-const NOTICE_KEY = "unfold:schedule-notice-dismissed";
-
 onMount(() => {
-	// hide the notice if it was dismissed on a prior visit, or if the
-	// program has already started (the news is stale by then).
-	const dismissed = localStorage.getItem(NOTICE_KEY) === "1";
-	if (!dismissed && clock.state === "prelaunch") {
-		noticeOpen = true;
-	}
-
 	const tick = () => {
 		now = DEV_NOW ?? new Date();
 		clock = programClock(now);
@@ -38,16 +24,6 @@ onMount(() => {
 	raf = requestAnimationFrame(tick);
 	return () => cancelAnimationFrame(raf);
 });
-
-function dismissNotice() {
-	noticeOpen = false;
-	try {
-		localStorage.setItem(NOTICE_KEY, "1");
-	} catch {
-		// localStorage can throw in private modes / quota — failing
-		// silently is fine; the notice just won't persist dismiss.
-	}
-}
 
 // hh:mm:ss in the user's local tz. monospace-width digits via the
 // tracking-widest font + tabular-nums.
@@ -107,7 +83,7 @@ const deadline = $derived.by(() => {
      it; loop + preload auto so the page doesn't pop a black frame. -->
 <video
 	class="fixed inset-0 w-full h-full object-cover -z-30 pointer-events-none"
-	src="/os-bg.mp4"
+	src="/os-bg-v2.mp4"
 	autoplay
 	muted
 	playsinline
@@ -207,23 +183,26 @@ const deadline = $derived.by(() => {
 <main
 	class="relative min-h-screen flex items-center justify-center px-6 font-serif text-white"
 >
-	<!-- doc + generate links: top-right corner -->
+	<!-- luma calendar link: top-left corner -->
+	<div class="absolute top-14 left-4 md:top-16 md:left-6 z-30">
+		<a
+			href="https://luma.com/unfold-cal"
+			target="_blank"
+			class="text-xs tracking-[0.25em] text-white/50 hover:text-white/80 underline decoration-1 underline-offset-4 transition-colors"
+		>
+			luma calendar →
+		</a>
+	</div>
+
+	<!-- doc link: top-right corner -->
 	<div class="absolute top-14 right-4 md:top-16 md:right-6 z-30 flex flex-col gap-6">
 		<a
-			href="/docs/week-1"
+			href="/docs/week-{current.n}"
 			aria-label="this week's doc"
 			class="transition-all hover:scale-110"
 		>
 			<img src="/icons/week-1-doc.svg" alt="" class="size-32 mx-auto" />
-			<span class="bg-black block text-center">week 1 info</span>
-		</a>
-		<a
-			href="/generate"
-			aria-label="generate slide"
-			class="transition-all hover:scale-110"
-		>
-			<img src="/icons/generate.svg" alt="" class="size-32 mx-auto" />
-			<span class="bg-black block text-center">generate idea slide</span>
+			<span class="bg-black block text-center">week {current.n} info</span>
 		</a>
 	</div>
 
@@ -243,16 +222,16 @@ const deadline = $derived.by(() => {
 		>
 			{clock.state === 'prelaunch'
 				? 'one day more'
-				: "what's your idea?"}
+				: "build your prototype"}
 		</h1>
 
 		<div class="mt-6 flex flex-col items-center gap-3 w-144">
 			<a
-				href="https://forms.hackclub.com/unfold-week-1"
+				href="https://forms.hackclub.com/unfold-week-2"
 				class="group block max-w-xl text-center text-xl md:text-2xl underline decoration-1 underline-offset-[6px] hover:tracking-widest transition-[letter-spacing] duration-500"
 				target="_blank"
 			>
-				submit for week 1 →
+				submit for week 2 →
 			</a>
 
 			{#if clock.state !== 'ended'}
@@ -270,32 +249,5 @@ const deadline = $derived.by(() => {
 		</div>
 	</div>
 
-	<!-- schedule-update notice. bottom-left, matches the top-right icon
-	     cluster's vibe (border + accent + soft black fill + blur). dismiss
-	     sticks in localStorage so it only shows once per browser. -->
-	{#if noticeOpen}
-		<aside
-			class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-30 max-w-sm bg-black/40 backdrop-blur-sm p-4 md:p-5 font-serif text-white"
-			aria-label="schedule update"
-		>
-			<p
-				class="text-sm tracking-[0.3em] text-(--color-dawn)/85 mb-2 flex items-center gap-2"
-			>
-				<span aria-hidden="true">✦</span>
-				<span>schedule update</span>
-			</p>
-			<p class="text-sm md:text-base text-white/85 leading-relaxed mb-3">
-				unfold's been pushed back a week. new week 1 starts
-				<strong class="font-semibold text-white">mon, jul 13</strong>.
-				still 6 weeks, still ships every sunday. if you've already shipped in week 1, your ship still counts and you can keep planning :)
-			</p>
-			<button
-				type="button"
-				onclick={dismissNotice}
-				class="text-sm tracking-[0.2em] text-white/70 underline decoration-1 underline-offset-4 hover:text-white transition-colors"
-			>
-				got it
-			</button>
-		</aside>
-	{/if}
+
 </main>
