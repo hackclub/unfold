@@ -4,8 +4,8 @@ import { onMount } from "svelte";
 let audio: HTMLAudioElement;
 let muted = $state(true);
 
-// sign-ups close at the end of tuesday jul 21 — midnight local = wed jul 22 00:00
-const SIGNUP_DEADLINE_MS = new Date(2026, 6, 22, 0, 0, 0, 0).getTime();
+// sign-ups close at the end of friday jul 24 — midnight local = sat jul 25 00:00
+const SIGNUP_DEADLINE_MS = new Date(2026, 6, 25, 0, 0, 0, 0).getTime();
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 let daysLeft = $state<string | null>(null);
@@ -118,6 +118,8 @@ function toggleMute() {
 >
 	{muted ? "unmute audio" : "mute audio"}
 </button>
+
+<a href="https://hackclub.com/"><img style="position: absolute; top: 20px; left: 0; border: 0; width: 256px; z-index: 999;" src="https://assets.hackclub.com/banners/2026.svg" alt="Hack Club"/></a>
 
 <main
 	class="relative text-white font-serif px-6 md:px-16 lg:px-32 max-w-7xl mx-auto"
