@@ -4,71 +4,14 @@ import { onMount } from "svelte";
 let audio: HTMLAudioElement;
 let muted = $state(true);
 
-// sign-ups close at the end of friday jul 24 — midnight local = sat jul 25 00:00
-const SIGNUP_DEADLINE_MS = new Date(2026, 6, 25, 0, 0, 0, 0).getTime();
-const MS_PER_DAY = 1000 * 60 * 60 * 24;
-
-let daysLeft = $state<string | null>(null);
-
-function tickCountdown() {
-	const remaining = SIGNUP_DEADLINE_MS - Date.now();
-	daysLeft = remaining <= 0 ? "0.00000" : (remaining / MS_PER_DAY).toFixed(5);
-}
-
-// the album arc: gold → green → sea → the dark middle → bloom → sunrise
-const weeks = [
-	{
-		n: "one",
-		title: "first light",
-		body: "decide what you're gonna build & sketch out your idea",
-		accent: "var(--color-dawn)",
-	},
-	{
-		n: "two",
-		title: "the prototype",
-		body: "build the tiniest possible version, then ship it",
-		accent: "var(--color-leaf)",
-	},
-	{
-		n: "three",
-		title: "show n tell",
-		body: "share your prototype, get thoughts, build on them.",
-		accent: "var(--color-sea)",
-	},
-	{
-		n: "four",
-		title: "midnight",
-		body: "lock in to build the bulk of your project.",
-		accent: "var(--color-dusk)",
-	},
-	{
-		n: "five",
-		title: "find your ppl",
-		body: "find real users, iterate on feedback, and polish your work.",
-		accent: "var(--color-bloom)",
-	},
-	{
-		n: "six",
-		title: "unfold",
-		body: "your final ship. share with the world",
-		accent: "var(--color-ember)",
-	},
-];
-
 onMount(() => {
-	tickCountdown();
-	const countdownId = setInterval(tickCountdown, 100);
-
 	if (audio) {
 		audio.muted = true;
 		audio.volume = 0.3;
 		audio.play().catch(() => {
-			// autoplay blocked (common without a prior user gesture) — silently
-			// leave it paused; the mute toggle is the explicit opt-in.
+			// autoplay blocked — silently leave paused; mute toggle is opt-in
 		});
 	}
-
-	return () => clearInterval(countdownId);
 });
 
 function toggleMute() {
@@ -122,269 +65,54 @@ function toggleMute() {
 <a href="https://hackclub.com/"><img style="position: absolute; top: 20px; left: 0; border: 0; width: 256px; z-index: 999;" src="https://assets.hackclub.com/banners/2026.svg" alt="Hack Club"/></a>
 
 <main
-	class="relative text-white font-serif px-6 md:px-16 lg:px-32 max-w-7xl mx-auto"
+	class="relative text-white font-serif px-6 md:px-16 max-w-[57rem] mx-auto min-h-screen flex flex-col justify-center py-24"
 >
-	<section class="min-h-screen flex flex-col justify-center py-24">
-		<p
-			class="italic mb-5 text-sm md:text-base tracking-[0.35em] text-(--color-dawn)/90"
-		>
-			ꕥ&ensp;and i watched the water unfold
+	<div class="space-y-7 text-xl md:text-2xl text-white/80 leading-relaxed">
+		<p class="text-white/70 text-base md:text-lg tracking-[0.35em] italic">dear internet,</p>
+
+		<p>
+			unfold takes teens from one-liner to something <em class="italic text-white">real</em>. we give teens grants, peer groups, and six structured weeks to ship any idea. big, small, crazy, weird.
 		</p>
-		<h1 class="text-7xl md:text-9xl lg:text-[10rem] tracking-[0.3em]">
-			unfold
-		</h1>
-		<p class="text-2xl md:text-4xl lg:text-5xl mt-5 max-w-4xl leading-snug">
-			go from one-liner to something
-			<em class="italic">real</em> in 6 weeks.
+
+		<p>
+			hardware. ai apps. games. dev tools. we can't wait to see what they make :D
 		</p>
-		<p class="text-lg md:text-xl text-white/60 mt-6 max-w-2xl">
-			week 1 started july 13, but you can still join us! fully online. a <a
-				href="https://hackclub.com"
-				class="underline decoration-1 underline-offset-4 hover:text-white transition-colors"
-				target="_blank"
-				rel="noopener noreferrer">hack club</a
-			> program, by
-			<a
-				href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R"
-				class="transition-colors duration-300 hover:text-(--color-dawn)"
-				target="_blank"
-				rel="noopener noreferrer">neven</a
-			>,
-			<a
-				href="https://hackclub.enterprise.slack.com/team/U07VA44DNBA"
-				class="transition-colors duration-300 hover:text-(--color-leaf)"
-				target="_blank"
-				rel="noopener noreferrer">mat</a
-			>,
-			<a
-				href="https://hackclub.enterprise.slack.com/team/U0926UASBJ7"
-				class="transition-colors duration-300 hover:text-(--color-sea)"
-				target="_blank"
-				rel="noopener noreferrer">jenin</a
-			>
-			&amp;
-			<a
-				href="https://hackclub.enterprise.slack.com/team/U08RWM5U4L9"
-				class="transition-colors duration-300 hover:text-(--color-dusk)"
-				target="_blank"
-				rel="noopener noreferrer">dhamari</a
-		>.
-			<a
-				href="https://www.youtube.com/watch?v=Q8Iexi4m1tQ"
-				class="underline decoration-1 underline-offset-4 transition-colors duration-300 hover:text-(--color-ember)"
-				target="_blank"
-				rel="noopener noreferrer">watch the film →</a
-			>
+
+		<p>
+			we're in the middle of our summer 2026 season right now. follow along on
+			<a href="https://www.youtube.com/@hackclub_unfold" target="_blank" rel="noopener noreferrer" class="text-(--color-ember) hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">youtube</a>
+			·
+			<a href="https://x.com/hackclub_unfold" target="_blank" rel="noopener noreferrer" class="text-(--color-sea) hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">twitter</a>
+			·
+			<a href="https://bsky.app/profile/unfold.garden" target="_blank" rel="noopener noreferrer" class="text-(--color-dawn) hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">bluesky</a>
+			·
+			<a href="https://www.instagram.com/unfold.hackclub/" target="_blank" rel="noopener noreferrer" class="text-(--color-bloom) hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">instagram</a>,
+			or hang out with us on
+			<a href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">slack</a>.
 		</p>
-		<div class="mt-14 flex flex-col gap-5">
-			<a
-				href="/apply"
-				class="text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500 w-fit"
-			>
-				still want in? →
-		</a>
-			<div class="flex flex-col gap-1.5">
 
-				{#if daysLeft !== null}
-					<p
-						class="text-base md:text-lg text-white/60 tabular-nums"
-						aria-live="polite"
-					>
-						<em>late</em> sign-ups close in {daysLeft} days
-					</p>
-				{/if}
-			</div>
-		</div>
-	</section>
-
-	<section class="py-24 md:py-32">
-		<p class="text-lg md:text-xl text-white mb-12 max-w-2xl">
-			every week, you'll ship some version of your big idea.
+		<p>
+			~ neven (unfold org — <a href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white hover:tracking-[0.12em] transition-all duration-500 underline decoration-1 underline-offset-4">dm on slack</a>)
 		</p>
-		<div
-			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-		>
-			{#each weeks as week}
-				<article
-					class="week-card border bg-black/25 backdrop-blur-sm p-6 md:p-8"
-					style="--accent: {week.accent};"
-				>
-					<p
-						class="text-sm tracking-[0.25em] mb-3"
-						style="color: color-mix(in srgb, var(--accent) 85%, white);"
-					>
-						wk <em class="italic">{week.n}</em>
-					</p>
-					<h3 class="text-xl md:text-2xl mb-2">{week.title}</h3>
-					<p class="text-white/80">{week.body}</p>
-				</article>
-			{/each}
-		</div>
-	</section>
+	</div>
 
-	<section class="py-24 md:py-32">
-		<p class="mb-3 text-sm tracking-[0.35em] text-(--color-bloom)/80">
-			you ship, we ship
-		</p>
-		<h2 class="mb-14 text-3xl md:text-5xl">what we'll give you</h2>
-
-		<div class="grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-3">
-			<article
-				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
-				style="--accent: var(--color-leaf);"
-			>
-				<h3 class="mb-4 text-xl md:text-2xl">for your project</h3>
-				<ul class="space-y-3 leading-relaxed text-white/75">
-					<li>
-						<span class="text-(--color-leaf)">wk 2</span> — $10 domain
-						credit, so it has a home on the interwebz
-					</li>
-					<li>
-						<span class="text-(--color-leaf)">wk 4</span> — $15 hosting
-						&amp; infra credits
-					</li>
-					<li>
-						<span class="text-(--color-leaf)">wk 5+</span> — a discretionary
-						grant, for whatever it needs
-					</li>
-				</ul>
-			</article>
-
-			<article
-				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
-				style="--accent: var(--color-ember);"
-			>
-				<h3 class="mb-4 text-xl md:text-2xl">the box ꕥ</h3>
-				<p class="mb-3 text-sm text-white/50">
-					finish, and we mail you the completion package:
-				</p>
-				<ul class="space-y-3 leading-relaxed text-white/75">
-					<li>the unfold hoodie, exclusive to this summer</li>
-					<li>art print by a teen artist</li>
-					<li>other stuff if we have budget lol</li>
-					<li>a handwritten note &lt;3</li>
-				</ul>
-				<p class="mt-4 text-sm text-white/50">
-					(we'll also ship you an unfold sticker sheet if you ship a
-					prototype in week 2!)
-				</p>
-			</article>
-
-			<article
-				class="week-card border bg-black/25 p-6 backdrop-blur-sm md:p-8"
-				style="--accent: var(--color-sea);"
-			>
-				<h3 class="mb-4 text-xl md:text-2xl">the people</h3>
-				<ul class="space-y-3 leading-relaxed text-white/75">
-					<li>
-						a circle of 8–10 builders who actually know what you're
-						making
-					</li>
-					<li>
-						daily ish lock-in huddles — coworking calls, ambient
-						music, drop in whenever
-					</li>
-					<li>
-						workshops &amp; AMAs with people who've shipped real
-						things
-					</li>
-					<li>frequent show &amp; tells with your fellow hackers</li>
-				</ul>
-			</article>
-		</div>
-	</section>
-
-	<section class="py-24 md:py-32 max-w-3xl">
-		<!-- the vibe -->
-		<div class="space-y-6 text-lg md:text-xl text-white/80 leading-relaxed">
-			<p>
-				unfold is for the idea that's been sitting in your notes app.
-				the one you keep saying you'll start. over six weeks, alongside
-				other hack clubbers, you'll take it from a sentence to something
-				people actually use.
-			</p>
-			<p>
-				this is a program for people who want to make something real.
-				we'll give you a weekly shipping cadence, a community that
-				actually knows what you're building, and grants that go straight
-				to your project.
-			</p>
-			<p>
-				we're not here to teach you syntax or impose strict hour reqs.
-				we'll give you the structure, the people, and the deadline to
-				ship something you care about.
-			</p>
-			<p>
-				you'll make lifelong friends, grow technical and non-technical
-				skills, and end with a project you'll be proud of forever. i
-				hope to see you in week 1 :)
-			</p>
-			<p>
-				~ hex4, unfold org (<a
-					href="https://hackclub.enterprise.slack.com/team/U071JHBEJ7R"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="hover:text-white underline decoration-1 cursor-pointer underline-offset-4 transition-all duration-400"
-					>dm on slack!</a
-				>)
-			</p>
-		</div>
-	</section>
-
-	<section class="py-24 md:py-32 text-center">
-		<p class="text-2xl md:text-4xl mb-10">late sign-ups are still open.</p>
+	<div class="mt-16 text-center">
 		<a
-			href="/apply"
-			class="inline-block text-2xl md:text-3xl underline decoration-1 underline-offset-4 hover:tracking-widest transition-[letter-spacing] duration-500"
-		>
-			join us →
-		</a>
-	</section>
-
-	<footer class="py-32 md:py-64 text-center text-white/40">
-		<p class="text-4xl md:text-6xl mb-8">ꕥ</p>
-		<a
-			href="https://hackclub.enterprise.slack.com/archives/C0B013JNXPZ"
-			class="text-sm text-white tracking-[0.2em] underline decoration-1 underline-offset-4 hover:tracking-[0.35em] transition-[letter-spacing] duration-500"
-		>
-			#unfold on hack club slack
-		</a>
-		<div class="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm tracking-[0.15em]">
-		<a
-			href="https://www.youtube.com/@hackclub_unfold"
+			href="https://hackclub.com/programs"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="underline decoration-1 underline-offset-4 text-(--color-ember) hover:text-white transition-colors"
+			class="text-base text-white/70 hover:text-white hover:tracking-[0.08em] transition-all duration-500"
 		>
-			youtube
+			explore more hack club programs →
 		</a>
-			<span>·</span>
-			<a
-				href="https://x.com/hackclub_unfold"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="underline decoration-1 underline-offset-4 text-(--color-sea) hover:text-white transition-colors"
-			>
-				twitter
-			</a>
-			<span>·</span>
-			<a
-				href="https://bsky.app/profile/unfold.garden"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="underline decoration-1 underline-offset-4 text-(--color-dawn) hover:text-white transition-colors"
-			>
-				bluesky
-			</a>
-			<span>·</span>
-			<a
-				href="https://www.instagram.com/unfold.hackclub/"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="underline decoration-1 underline-offset-4 text-(--color-bloom) hover:text-white transition-colors"
-			>
-				instagram
-			</a>
-		</div>
-	</footer>
+	</div>
+
+	<div class="fixed bottom-8 left-0 right-0 text-center z-50">
+		<a
+			href="/os"
+			class="text-sm text-white/40 hover:text-white/60 hover:tracking-[0.08em] transition-all duration-500 underline decoration-1 underline-offset-4"
+		>
+			already in? continue to unfold os →
+		</a>
+	</div>
 </main>
