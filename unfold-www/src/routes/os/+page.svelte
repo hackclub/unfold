@@ -206,14 +206,14 @@ const deadline = $derived.by(() => {
 		</a>
 	</div>
 
-	<div class="text-center max-w-8xl flex flex-col items-center">
+	<div class="text-center max-w-8xl bg-green-400 flex flex-col items-center">
 		<p
-			class="italic text-base md:text-lg tracking-[0.35em] text-(--color-dawn)/85 mb-2"
+			class="italic text-base md:text-lg tracking-[0.35em] w-full text-(--color-dawn)/85 mb-2"
 		>
-			<span class="inline-flex items-center gap-[1em]">
-				<span class="italic mr-0.5">week {current.ordinal}</span>
-				<span class="not-italic text-5xl leading-none self-center">ꕥ</span>
-				<span class="italic">{current.title}</span>
+			<span class="flex bg-red-500 items-center gap-[1em] whitespace-nowrap">
+				<span class="italic flex-1 flex justify-end">week {current.ordinal}</span>
+				<span class="not-italic text-5xl leading-none bg-blue-400 pl-1 mt-1">ꕥ</span>
+				<span class="italic flex-1 flex justify-start">{current.title}</span>
 			</span>
 		</p>
 
