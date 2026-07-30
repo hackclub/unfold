@@ -83,7 +83,7 @@ const deadline = $derived.by(() => {
      it; loop + preload auto so the page doesn't pop a black frame. -->
 <video
 	class="fixed inset-0 w-full h-full object-cover -z-30 pointer-events-none"
-	src="/os-bg-v2.mp4"
+	src="/os-bg-week3.mp4"
 	autoplay
 	muted
 	playsinline
@@ -208,7 +208,8 @@ const deadline = $derived.by(() => {
 
 	<div class="text-center max-w-8xl flex flex-col items-center">
 		<p
-			class="italic text-base md:text-lg tracking-[0.35em] text-(--color-dawn)/85 mb-2"
+			class="italic text-base md:text-lg tracking-[0.35em] mb-2"
+			style="color: color-mix(in srgb, {current.accent} 85%, transparent)"
 		>
 			<span class="inline-flex items-center gap-[1em]">
 				<span class="italic mr-0.5">week {current.ordinal}</span>
@@ -222,16 +223,16 @@ const deadline = $derived.by(() => {
 		>
 			{clock.state === 'prelaunch'
 				? 'one day more'
-				: "build your prototype"}
+				: "iterate on feedback"}
 		</h1>
 
 		<div class="mt-6 flex flex-col items-center gap-3 w-144">
 			<a
-				href="https://forms.hackclub.com/unfold-week-2"
+				href="https://forms.hackclub.com/unfold-week-{current.n}"
 				class="group block max-w-xl text-center text-xl md:text-2xl underline decoration-1 underline-offset-[6px] hover:tracking-widest transition-[letter-spacing] duration-500"
 				target="_blank"
 			>
-				submit for week 2 →
+				submit for week {current.n} →
 			</a>
 
 			{#if clock.state !== 'ended'}
