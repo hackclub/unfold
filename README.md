@@ -6,8 +6,8 @@ it was built with SvelteKit, and previously deployed on Cloudflare Workers. now 
 
 only the doc for the current week is acessible by clicking around - so that people don't get confused - but you can always use direct links to the [previous](https://unfold.hackclub.com/docs/week-1) [weeks](https://unfold.hackclub.com/docs/week-2).
 
-[!image](https://cdn.hackclub.com/019fb4fd-d551-7653-9c0d-8449afeb17c7/image.png)
-[!image](https://cdn.hackclub.com/019fb4fd-d8b7-7b3e-bbf4-8be7c5ac1c4f/image.png)
+![image](https://cdn.hackclub.com/019fb4fd-d551-7653-9c0d-8449afeb17c7/image.png)
+![image](https://cdn.hackclub.com/019fb4fd-d8b7-7b3e-bbf4-8be7c5ac1c4f/image.png)
 
 ## how to deploy
 
